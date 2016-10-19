@@ -1,0 +1,95 @@
+{
+	"groups": [
+		{
+			"keys": "bg_jpg,egret_icon_png,description_json,10000_png,10001_png,10002_png,10003_png,10004_png,10005_png,10006_png,10007_png,Idle3_png,Idle0_png,Idle1_png,Idle2_png,road_jpg,water_jpg",
+			"name": "preload"
+		}
+	],
+	"resources": [
+		{
+			"url": "assets/bg.jpg",
+			"type": "image",
+			"name": "bg_jpg"
+		},
+		{
+			"url": "assets/egret_icon.png",
+			"type": "image",
+			"name": "egret_icon_png"
+		},
+		{
+			"url": "config/description.json",
+			"type": "json",
+			"name": "description_json"
+		},
+		{
+			"url": "assets/10000.png",
+			"type": "image",
+			"name": "10000_png"
+		},
+		{
+			"url": "assets/10001.png",
+			"type": "image",
+			"name": "10001_png"
+		},
+		{
+			"url": "assets/10002.png",
+			"type": "image",
+			"name": "10002_png"
+		},
+		{
+			"url": "assets/10003.png",
+			"type": "image",
+			"name": "10003_png"
+		},
+		{
+			"url": "assets/10004.png",
+			"type": "image",
+			"name": "10004_png"
+		},
+		{
+			"url": "assets/10005.png",
+			"type": "image",
+			"name": "10005_png"
+		},
+		{
+			"url": "assets/10006.png",
+			"type": "image",
+			"name": "10006_png"
+		},
+		{
+			"url": "assets/10007.png",
+			"type": "image",
+			"name": "10007_png"
+		},
+		{
+			"url": "assets/Idle3.png",
+			"type": "image",
+			"name": "Idle3_png"
+		},
+		{
+			"url": "assets/Idle0.png",
+			"type": "image",
+			"name": "Idle0_png"
+		},
+		{
+			"url": "assets/Idle1.png",
+			"type": "image",
+			"name": "Idle1_png"
+		},
+		{
+			"url": "assets/Idle2.png",
+			"type": "image",
+			"name": "Idle2_png"
+		},
+		{
+			"url": "assets/road.jpg",
+			"type": "image",
+			"name": "road_jpg"
+		},
+		{
+			"url": "assets/water.jpg",
+			"type": "image",
+			"name": "water_jpg"
+		}
+	]
+}
