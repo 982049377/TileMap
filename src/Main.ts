@@ -125,7 +125,19 @@ class Main extends egret.DisplayObjectContainer {
         p.firstCreat();
         this.addChild(p);
         p.Creat();
-    
+        
+        var offsetx:number;
+        this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
+             offsetx=e.stageX-bg.x;
+            this.addEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this)
+        },this);
+        function onMove(e:egret.TouchEvent){
+            bg.x+=offsetx;
+            console.log("onMove");
+        }
+        this.addEventListener(egret.TouchEvent.TOUCH_END,()=>{
+             this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this);
+        },this)
     }
   
     /**

@@ -30,11 +30,12 @@ var Person = (function (_super) {
         var idle = new Idle(this);
         var x;
         var y;
+        this.touchEnabled = true;
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP, function (evt) {
             var dis = Math.sqrt(Math.pow((evt.stageX - _this._person.x), 2) + Math.pow((evt.stageY - _this._person.y), 2));
             var time = dis / _this._speed * 10;
             if (_this._State == walk) {
-                console.log("          " + _this._State);
+                // console.log("          "+this._State);
                 egret.Tween.removeTweens(_this._person);
                 egret.Tween.get(_this._person).to({ x: evt.stageX, y: evt.stageY }, time, egret.Ease.sineIn);
             }

@@ -29,12 +29,13 @@ class Person extends egret.DisplayObjectContainer{
         var idle:Idle=new Idle (this);
         var x:number;
         var y:number;
+        this.touchEnabled = true;
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(evt:egret.TouchEvent)=>{
             var dis=Math.sqrt(Math.pow((evt.stageX-this._person.x),2)+Math.pow((evt.stageY-this._person.y),2));
             var time=dis/this._speed*10;
             if(this._State==walk)
             {
-                console.log("          "+this._State);
+               // console.log("          "+this._State);
                 egret.Tween.removeTweens(this._person);
                 egret.Tween.get(this._person).to({x:evt.stageX,y:evt.stageY},time, egret.Ease.sineIn );
             }else{

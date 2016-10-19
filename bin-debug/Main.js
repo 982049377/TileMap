@@ -102,10 +102,7 @@ var Main = (function (_super) {
      * Create a game scene
      */
     p.createGameScene = function () {
-        // var bg=this.createBitmapByName("bg_jpg");
-        // bg.width=this.stage.stageWidth;
-        // bg.height=this.stage.stageHeight;
-        // this.addChild(bg);
+        var _this = this;
         var bg = new TileMap();
         bg.x = 0;
         bg.y = 0;
@@ -113,14 +110,20 @@ var Main = (function (_super) {
         bg.Create();
         var p = new Person();
         p.firstCreat();
-        // p.x=111;
-        // p.y=111;
         this.addChild(p);
-        /* egret.startTick(():boolean=>{
-              p.Creat();
-             return false;
-         },this);*/
         p.Creat();
+        var offsetx;
+        this.addEventListener(egret.TouchEvent.TOUCH_BEGIN, function (e) {
+            offsetx = e.stageX - bg.x;
+            _this.addEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, _this);
+        }, this);
+        function onMove(e) {
+            bg.x += offsetx;
+            console.log("onMove");
+        }
+        this.addEventListener(egret.TouchEvent.TOUCH_END, function () {
+            _this.removeEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, _this);
+        }, this);
     };
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
