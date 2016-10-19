@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bg_jpg,egret_icon_png,description_json,10000_png,10001_png,10002_png,10003_png,10004_png,10005_png,10006_png,10007_png,Idle3_png,Idle0_png,Idle1_png,Idle2_png,road_jpg,water_jpg",
+			"keys": "bg_jpg,egret_icon_png,description_json,10000_png,10001_png,10002_png,10003_png,10004_png,10005_png,10006_png,10007_png,Idle3_png,Idle0_png,Idle1_png,Idle2_png,road_jpg,water_jpg,water_png,road_png",
 			"name": "preload"
 		}
 	],
@@ -90,6 +90,16 @@
 			"url": "assets/water.jpg",
 			"type": "image",
 			"name": "water_jpg"
+		},
+		{
+			"url": "assets/water.png",
+			"type": "image",
+			"name": "water_png"
+		},
+		{
+			"url": "assets/road.png",
+			"type": "image",
+			"name": "road_png"
 		}
 	]
 }

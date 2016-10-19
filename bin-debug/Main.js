@@ -102,9 +102,12 @@ var Main = (function (_super) {
      * Create a game scene
      */
     p.createGameScene = function () {
-        var bg = this.createBitmapByName("bg_jpg");
-        bg.width = this.stage.stageWidth;
-        bg.height = this.stage.stageHeight;
+        // var bg=this.createBitmapByName("bg_jpg");
+        // bg.width=this.stage.stageWidth;
+        // bg.height=this.stage.stageHeight;
+        // this.addChild(bg);
+        var bg = new TileMap();
+        bg.Create();
         this.addChild(bg);
         var p = new Person();
         p.firstCreat();
