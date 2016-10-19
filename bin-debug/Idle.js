@@ -13,7 +13,7 @@ var Idle = (function () {
     };
     p.onExit = function () {
         egret.stopTick(this.PlayIdle, this);
-        console.log("IdleExit");
+        //console.log("IdleExit");
     };
     p.PlayIdle = function () {
         this.count++;

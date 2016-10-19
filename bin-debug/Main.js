@@ -107,8 +107,10 @@ var Main = (function (_super) {
         // bg.height=this.stage.stageHeight;
         // this.addChild(bg);
         var bg = new TileMap();
-        bg.Create();
+        bg.x = 0;
+        bg.y = 0;
         this.addChild(bg);
+        bg.Create();
         var p = new Person();
         p.firstCreat();
         // p.x=111;

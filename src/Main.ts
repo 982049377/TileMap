@@ -115,22 +115,15 @@ class Main extends egret.DisplayObjectContainer {
      * Create a game scene
      */
     private createGameScene():void {
-        // var bg=this.createBitmapByName("bg_jpg");
-        // bg.width=this.stage.stageWidth;
-        // bg.height=this.stage.stageHeight;
-        // this.addChild(bg);
         var bg:TileMap=new TileMap();
-        bg.Create();
+        bg.x=0;
+        bg.y=0;
         this.addChild(bg);
+        bg.Create();
+        
         var p:Person=new Person();
         p.firstCreat();
-       // p.x=111;
-       // p.y=111;
         this.addChild(p);
-       /* egret.startTick(():boolean=>{
-             p.Creat();
-            return false;
-        },this);*/
         p.Creat();
     
     }

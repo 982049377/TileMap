@@ -13,7 +13,7 @@ class Idle implements State{
 
         onExit(){
             egret.stopTick(this.PlayIdle,this);
-            console.log("IdleExit");
+            //console.log("IdleExit");
         }
 
         private PlayIdle():boolean{

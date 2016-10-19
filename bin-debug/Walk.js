@@ -9,7 +9,7 @@ var Walk = (function () {
     var d = __define,c=Walk,p=c.prototype;
     p.onEnter = function () {
         egret.startTick(this.PlayWalk, this);
-        console.log("EnterWalk");
+        //           console.log("EnterWalk");
     };
     p.onExit = function () {
         egret.stopTick(this.PlayWalk, this);

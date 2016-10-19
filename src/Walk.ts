@@ -9,7 +9,7 @@ class Walk implements State{
           }
           onEnter(){
                 egret.startTick(this.PlayWalk,this);
-                     console.log("EnterWalk");
+          //           console.log("EnterWalk");
           }
 
           onExit(){
