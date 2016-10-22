@@ -203,7 +203,7 @@ private insert_to_opentable( x:number,y:number, curr_node:MapNode,w:number )
 {  
     var i:number;  
   
-    if ( this._grid[1][2].WalkAble != false )        // 不是障碍物  
+    if ( this._grid[x][y].WalkAble != false )        // 不是障碍物  
     {  
         if ( !this.Has_closeArray(this._grid[x][y]) )   // 不在闭表中  
         {  

@@ -155,12 +155,16 @@ var Astar = (function () {
     //   
     p.insert_to_opentable = function (x, y, curr_node, w) {
         var i;
-        if (this._grid[1][2].WalkAble != false) {
-            if (!this.Has_closeArray(this._grid[x][y])) {
-                if (this.Has_openArray(this._grid[x][y])) {
+        // if ( this._grid[x][y].WalkAble != false )        // 不是障碍物  
+        {
+            //  if ( !this.Has_closeArray(this._grid[x][y]) )   // 不在闭表中  
+            {
+                // if ( this.Has_openArray(this._grid[x][y]) ) // 在open表中  
+                {
                     // 需要判断是否是一条更优化的路径  
                     //   
-                    if (this._grid[x][y].g > curr_node.g + w) {
+                    // if ( this._grid[x][y].g > curr_node.g + w )    // 如果更优化  
+                    {
                         this._grid[x][y].g = curr_node.g + w;
                         this._grid[x][y].parent = curr_node;
                         for (i = 0; i < this._openArray.length; ++i) {
@@ -170,12 +174,6 @@ var Astar = (function () {
                         }
                         this.adjust_heap(i); // 下面调整点  
                     }
-                }
-                else {
-                    this._grid[x][y].g = curr_node.g + w;
-                    this._grid[x][y].h = Math.abs(this._endx - x) + Math.abs(this._endy - y);
-                    this._grid[x][y].parent = curr_node;
-                    this._openArray.push(this._grid[x][y]);
                 }
             }
         }
