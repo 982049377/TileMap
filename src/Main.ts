@@ -114,30 +114,38 @@ class Main extends egret.DisplayObjectContainer {
      * 创建游戏场景
      * Create a game scene
      */
+    private _player:Person;
+    private _astar:Astar;
+    private _bg:TileMap;
+    private _grid:Grid;
+    private _path:Array<MapNode>=new Array;
     private createGameScene():void {
-        var bg:TileMap=new TileMap();
-        bg.x=0;
-        bg.y=0;
-        this.addChild(bg);
-        bg.Create();
+        this._bg=new TileMap();
+        this._bg.x=0;
+        this._bg.y=0;
+        this.addChild(this._bg);
+        this._bg.Create();
+
+        this._grid=this._bg._grid;
+        this._astar=new Astar(this._grid);
+
+        this._player=new Person();
+        this._player.firstCreat();
+        this.addChild(this._player);
+        this._player.Creat(this._astar);
         
-        var p:Person=new Person();
-        p.firstCreat();
-        this.addChild(p);
-        p.Creat();
-        
-        var offsetx:number;
-        this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
-             offsetx=e.stageX-bg.x;
-            this.addEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this)
-        },this);
-        function onMove(e:egret.TouchEvent){
-            bg.x+=offsetx;
-            console.log("onMove");
-        }
-        this.addEventListener(egret.TouchEvent.TOUCH_END,()=>{
-             this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this);
-        },this)
+        // var offsetx:number;
+        // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
+        //      offsetx=e.stageX-bg.x;
+        //     this.addEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this)
+        // },this);
+        // function onMove(e:egret.TouchEvent){
+        //     bg.x+=offsetx;
+        //     console.log("onMove");
+        // }
+        // this.addEventListener(egret.TouchEvent.TOUCH_END,()=>{
+        //      this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this);
+        // },this)
     }
   
     /**

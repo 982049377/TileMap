@@ -24,13 +24,18 @@ class Person extends egret.DisplayObjectContainer{
         this._State=idle;
         idle.onEnter();
       }
-      public Creat(){
+      private _astar:Astar;
+      public Creat(astar:Astar){
+        this._astar=astar;
         var walk:Walk=new Walk(this);
         var idle:Idle=new Idle (this);
         var x:number;
         var y:number;
         this.touchEnabled = true;
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(evt:egret.TouchEvent)=>{
+            this._astar.setStartNode(this.x,this.y);
+            this._astar.setEndNode(evt.stageX/100,evt.stageY/100);
+            this._astar.find();
             var dis=Math.sqrt(Math.pow((evt.stageX-this._person.x),2)+Math.pow((evt.stageY-this._person.y),2));
             var time=dis/this._speed*10;
             if(this._State==walk)

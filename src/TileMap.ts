@@ -1,6 +1,7 @@
 class TileMap extends egret.DisplayObjectContainer{
 
-    private MapSize=100;
+    public MapSize=100;
+    public _grid:Grid;
     constructor(){
         super();
         //this.Create();
@@ -119,14 +120,14 @@ class TileMap extends egret.DisplayObjectContainer{
         {x:9,y:7,WalkAble:false,image:"water_jpg"},
         {x:9,y:8,WalkAble:false,image:"water_jpg"},
         {x:9,y:9,WalkAble:true,image:"road_jpg"},
-    ];;
+    ];
+  
     public Create(){
-          //var grid= new animationStartTime.Grid(8,8);
+       this._grid= new Grid(10,10);
         var Container=new egret.DisplayObjectContainer();
         for(var i=0;i<this.MapInfomation.length;i++){
             var date=this.MapInfomation[i];
-            var tile=new Tile(date,this.MapSize);
-          //  grid.setWalkAble(tile.x,tile.y,tile.WalkAble);
+            var tile=new Tile(date,this.MapSize,this._grid);
             this.addChild(tile)
         }
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(e:egret.TouchEvent)=>{
@@ -135,8 +136,10 @@ class TileMap extends egret.DisplayObjectContainer{
             console.log("x:"+x+"y:"+y)
         },this)
     }
-
+     
 }
+
+
 interface TileDate{
     x:number;
     y:number;
@@ -147,15 +150,19 @@ interface TileDate{
 class Tile extends egret.DisplayObjectContainer{
     date:TileDate;
     MapSize:number;
-    constructor(Date:TileDate,mapsize:number) {
+    grid:Grid;
+    constructor(Date:TileDate,mapsize:number,grid:Grid) {
         super();
         this.date=Date;
         this.MapSize=mapsize;
+        this.grid=grid;
         var Bitmap=new egret.Bitmap();
         Bitmap.texture=RES.getRes(Date.image);
         Bitmap.x=Date.x*this.MapSize;
         Bitmap.y=Date.y*this.MapSize;
+        grid.setWalkAble(Date.x,Date.y,Date.WalkAble);
         this.addChild(Bitmap);
+      //  grid.OuttoConsole();
     }
 
 }

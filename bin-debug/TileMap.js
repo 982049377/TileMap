@@ -109,15 +109,13 @@ var TileMap = (function (_super) {
         //this.Create();
     }
     var d = __define,c=TileMap,p=c.prototype;
-    ;
     p.Create = function () {
         var _this = this;
-        //var grid= new animationStartTime.Grid(8,8);
+        this._grid = new Grid(10, 10);
         var Container = new egret.DisplayObjectContainer();
         for (var i = 0; i < this.MapInfomation.length; i++) {
             var date = this.MapInfomation[i];
-            var tile = new Tile(date, this.MapSize);
-            //  grid.setWalkAble(tile.x,tile.y,tile.WalkAble);
+            var tile = new Tile(date, this.MapSize, this._grid);
             this.addChild(tile);
         }
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e) {
@@ -131,15 +129,18 @@ var TileMap = (function (_super) {
 egret.registerClass(TileMap,'TileMap');
 var Tile = (function (_super) {
     __extends(Tile, _super);
-    function Tile(Date, mapsize) {
+    function Tile(Date, mapsize, grid) {
         _super.call(this);
         this.date = Date;
         this.MapSize = mapsize;
+        this.grid = grid;
         var Bitmap = new egret.Bitmap();
         Bitmap.texture = RES.getRes(Date.image);
         Bitmap.x = Date.x * this.MapSize;
         Bitmap.y = Date.y * this.MapSize;
+        grid.setWalkAble(Date.x, Date.y, Date.WalkAble);
         this.addChild(Bitmap);
+        //  grid.OuttoConsole();
     }
     var d = __define,c=Tile,p=c.prototype;
     return Tile;

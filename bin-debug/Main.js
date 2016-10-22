@@ -31,6 +31,7 @@ var Main = (function (_super) {
     //public sssssss;
     function Main() {
         _super.call(this);
+        this._path = new Array;
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
     var d = __define,c=Main,p=c.prototype;
@@ -97,33 +98,30 @@ var Main = (function (_super) {
             this.loadingView.setProgress(event.itemsLoaded, event.itemsTotal);
         }
     };
-    /**
-     * 创建游戏场景
-     * Create a game scene
-     */
     p.createGameScene = function () {
-        var _this = this;
-        var bg = new TileMap();
-        bg.x = 0;
-        bg.y = 0;
-        this.addChild(bg);
-        bg.Create();
-        var p = new Person();
-        p.firstCreat();
-        this.addChild(p);
-        p.Creat();
-        var offsetx;
-        this.addEventListener(egret.TouchEvent.TOUCH_BEGIN, function (e) {
-            offsetx = e.stageX - bg.x;
-            _this.addEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, _this);
-        }, this);
-        function onMove(e) {
-            bg.x += offsetx;
-            console.log("onMove");
-        }
-        this.addEventListener(egret.TouchEvent.TOUCH_END, function () {
-            _this.removeEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, _this);
-        }, this);
+        this._bg = new TileMap();
+        this._bg.x = 0;
+        this._bg.y = 0;
+        this.addChild(this._bg);
+        this._bg.Create();
+        this._grid = this._bg._grid;
+        this._astar = new Astar(this._grid);
+        this._player = new Person();
+        this._player.firstCreat();
+        this.addChild(this._player);
+        this._player.Creat(this._astar);
+        // var offsetx:number;
+        // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
+        //      offsetx=e.stageX-bg.x;
+        //     this.addEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this)
+        // },this);
+        // function onMove(e:egret.TouchEvent){
+        //     bg.x+=offsetx;
+        //     console.log("onMove");
+        // }
+        // this.addEventListener(egret.TouchEvent.TOUCH_END,()=>{
+        //      this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this);
+        // },this)
     };
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。

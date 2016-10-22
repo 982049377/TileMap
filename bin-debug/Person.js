@@ -24,14 +24,18 @@ var Person = (function (_super) {
         this._State = idle;
         idle.onEnter();
     };
-    p.Creat = function () {
+    p.Creat = function (astar) {
         var _this = this;
+        this._astar = astar;
         var walk = new Walk(this);
         var idle = new Idle(this);
         var x;
         var y;
         this.touchEnabled = true;
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP, function (evt) {
+            _this._astar.setStartNode(_this.x, _this.y);
+            _this._astar.setEndNode(evt.stageX / 100, evt.stageY / 100);
+            _this._astar.find();
             var dis = Math.sqrt(Math.pow((evt.stageX - _this._person.x), 2) + Math.pow((evt.stageY - _this._person.y), 2));
             var time = dis / _this._speed * 10;
             if (_this._State == walk) {
