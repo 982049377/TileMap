@@ -29,6 +29,7 @@ class Astar
         public setStartNode(xpos: number, ypos: number) {
             this._startx = xpos;
             this._starty = ypos;
+              console.log("起111点x:"+xpos+"y:"+ypos)
         }
 
         private manhattan(node:MapNode):number{
@@ -55,6 +56,8 @@ class Astar
             var mm=new MapNode(this._startx,this._starty);
             // this._grid.OuttoConsole();
             // console.log(mm.x+"0.123"+mm.y);
+            console.log("起点x:"+this._startx+"y:"+this._starty)
+            console.log("终点x:"+this._endx+"y:"+this._endy)
             this.findPath(mm);
         }
         private findPath(m:MapNode):number
@@ -197,7 +200,7 @@ private insert_to_opentable( x:number,y:number, curr_node:MapNode,w:number )
             if(!this.Has_openArray(this._grid._Grid[x][y]))                             // 不在open中  
             {  
                 this._grid._Grid[x][y].g = curr_node.g + w;  
-                this._grid._Grid[x][y].h = Math.abs(this._endx - x ) + Math.abs(this._endy - y);  
+                this._grid._Grid[x][y].h = this.manhattan(this._grid._Grid[x][y]);  
                 this._grid._Grid[x][y].parent = curr_node;  
                 this._openArray.push(this._grid._Grid[x][y]); 
             }  

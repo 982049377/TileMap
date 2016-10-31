@@ -121,8 +121,8 @@ class Main extends egret.DisplayObjectContainer {
     private _path:Array<MapNode>=new Array;
     private createGameScene():void {
         this._bg=new TileMap();
-        this._bg.x=0;
-        this._bg.y=0;
+       // this._bg.x=0;
+       // this._bg.y=0;
         this.addChild(this._bg);
         this._bg.Create();
 
@@ -130,9 +130,9 @@ class Main extends egret.DisplayObjectContainer {
         this._astar=new Astar(this._grid);
 
         this._player=new Person();
-        this._player.firstCreat();
+        this._player.firstCreat(this._astar);
         this.addChild(this._player);
-        this._player.Creat(this._astar);
+        this._player.Creat();
         
         // var offsetx:number;
         // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{

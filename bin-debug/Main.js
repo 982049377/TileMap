@@ -100,16 +100,16 @@ var Main = (function (_super) {
     };
     p.createGameScene = function () {
         this._bg = new TileMap();
-        this._bg.x = 0;
-        this._bg.y = 0;
+        // this._bg.x=0;
+        // this._bg.y=0;
         this.addChild(this._bg);
         this._bg.Create();
         this._grid = this._bg._grid;
         this._astar = new Astar(this._grid);
         this._player = new Person();
-        this._player.firstCreat();
+        this._player.firstCreat(this._astar);
         this.addChild(this._player);
-        this._player.Creat(this._astar);
+        this._player.Creat();
         // var offsetx:number;
         // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
         //      offsetx=e.stageX-bg.x;

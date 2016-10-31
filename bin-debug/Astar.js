@@ -23,6 +23,7 @@ var Astar = (function () {
     p.setStartNode = function (xpos, ypos) {
         this._startx = xpos;
         this._starty = ypos;
+        console.log("起111点x:" + xpos + "y:" + ypos);
     };
     p.manhattan = function (node) {
         return Math.abs(node.x - this._endx) * this._straightCost + Math.abs(node.y + this._endy) * this._straightCost;
@@ -45,6 +46,8 @@ var Astar = (function () {
         var mm = new MapNode(this._startx, this._starty);
         // this._grid.OuttoConsole();
         // console.log(mm.x+"0.123"+mm.y);
+        console.log("起点x:" + this._startx + "y:" + this._starty);
+        console.log("终点x:" + this._endx + "y:" + this._endy);
         this.findPath(mm);
     };
     p.findPath = function (m) {
@@ -105,7 +108,7 @@ var Astar = (function () {
     };
     p.Has_closeArray = function (M) {
         for (var i = 0; i <= this._closeArray.length; i++) {
-            if (this._closeArray[i].compare(M))
+            if (this._closeArray[i] == M)
                 return true;
         }
         return false;
@@ -159,7 +162,7 @@ var Astar = (function () {
                 // else       
                 if (!this.Has_openArray(this._grid._Grid[x][y])) {
                     this._grid._Grid[x][y].g = curr_node.g + w;
-                    this._grid._Grid[x][y].h = Math.abs(this._endx - x) + Math.abs(this._endy - y);
+                    this._grid._Grid[x][y].h = this.manhattan(this._grid._Grid[x][y]);
                     this._grid._Grid[x][y].parent = curr_node;
                     this._openArray.push(this._grid._Grid[x][y]);
                 }

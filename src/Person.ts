@@ -2,6 +2,7 @@ class Person extends egret.DisplayObjectContainer{
       public _person:egret.Bitmap=new egret.Bitmap();
       private _State:State;
       private _speed:number=1.5;
+      private _astar:Astar;
       public constructor() {
         super();
       }
@@ -12,28 +13,30 @@ class Person extends egret.DisplayObjectContainer{
           this._State=e;
           this._State.onEnter();
         }
-      public firstCreat(){
+      public firstCreat(astar:Astar){
+        this._astar=astar;
         this._person=this.createBitmapByName("10000_png")
         this._person.x=0;
-        this._person.y=0;
+        this._person.y=200;
         this.setAnchor(this._person);
- 
+        this._astar.setStartNode(Math.floor(this._person.x/100),Math.floor(this._person.y/100));
         this.addChild(this._person);
         var idle:Idle=new Idle (this);
         var walk:Walk=new Walk(this);
         this._State=idle;
         idle.onEnter();
       }
-      private _astar:Astar;
-      public Creat(astar:Astar){
-        this._astar=astar;
+    
+
+      public Creat(){
+      
         var walk:Walk=new Walk(this);
         var idle:Idle=new Idle (this);
         var x:number;
         var y:number;
         this.touchEnabled = true;
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(evt:egret.TouchEvent)=>{
-            this._astar.setStartNode(this.x,this.y);
+           
             this._astar.setEndNode(Math.floor(evt.stageX/100),Math.floor(evt.stageY/100));
             this._astar.find();
             var dis=Math.sqrt(Math.pow((evt.stageX-this._person.x),2)+Math.pow((evt.stageY-this._person.y),2));
@@ -42,6 +45,7 @@ class Person extends egret.DisplayObjectContainer{
             {
                // console.log("          "+this._State);
                 egret.Tween.removeTweens(this._person);
+                this._astar.setStartNode(Math.floor(this._person.x/100),Math.floor(this._person.y/100));
                 egret.Tween.get(this._person).to({x:evt.stageX,y:evt.stageY},time, egret.Ease.sineIn );
             }else{
                  this.SetState(walk);
