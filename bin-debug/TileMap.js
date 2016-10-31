@@ -121,7 +121,7 @@ var TileMap = (function (_super) {
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e) {
             var x = Math.floor(e.stageX / _this.MapSize);
             var y = Math.floor(e.stageY / _this.MapSize);
-            console.log("xx:" + x + "yy" + y);
+            console.log("鼠标点击点xx:" + x + "yy" + y);
         }, this);
     };
     return TileMap;

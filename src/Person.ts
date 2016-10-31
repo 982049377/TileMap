@@ -36,23 +36,36 @@ class Person extends egret.DisplayObjectContainer{
         var y:number;
         this.touchEnabled = true;
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(evt:egret.TouchEvent)=>{
-           
             this._astar.setEndNode(Math.floor(evt.stageX/100),Math.floor(evt.stageY/100));
-            this._astar.find();
-            var dis=Math.sqrt(Math.pow((evt.stageX-this._person.x),2)+Math.pow((evt.stageY-this._person.y),2));
-            var time=dis/this._speed*10;
-            if(this._State==walk)
-            {
-               // console.log("          "+this._State);
-                egret.Tween.removeTweens(this._person);
-                this._astar.setStartNode(Math.floor(this._person.x/100),Math.floor(this._person.y/100));
-                egret.Tween.get(this._person).to({x:evt.stageX,y:evt.stageY},time, egret.Ease.sineIn );
-            }else{
-                 this.SetState(walk);
-                 egret.Tween.get(this._person).to({x:evt.stageX,y:evt.stageY},time, egret.Ease.sineIn );
+            var i=this._astar.findPath();
+            if(i==1){
+              var dis=Math.sqrt(Math.pow((evt.stageX-this._person.x),2)+Math.pow((evt.stageY-this._person.y),2));
+              var time=dis/this._speed*10;
+              if(this._State==walk)
+              {
+                // console.log("          "+this._State);
+                  egret.Tween.removeTweens(this._person);
+                  egret.Tween.get(this._person).to({x:evt.stageX,y:evt.stageY},time, egret.Ease.sineIn );
+              }else{
+                  this.SetState(walk);
+                  egret.Tween.get(this._person).to({x:evt.stageX,y:evt.stageY},time, egret.Ease.sineIn );
+              }
+              x=evt.stageX;
+              y=evt.stageY;
+              this._astar.setStartNode(Math.floor(this._person.x/100),Math.floor(this._person.y/100));
             }
-            x=evt.stageX;
-            y=evt.stageY;
+            else
+              if(i==0)
+              {
+                this.SetState(idle);
+                i=2;
+              }
+              else
+                if(i==-1)
+                {
+                    this.SetState(idle);
+                    i=2;
+                }
         },this);
         egret.startTick(():boolean=>{
         if(this._person.x==x && this._person.y==y){

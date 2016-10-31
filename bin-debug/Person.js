@@ -35,21 +35,31 @@ var Person = (function (_super) {
         this.touchEnabled = true;
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP, function (evt) {
             _this._astar.setEndNode(Math.floor(evt.stageX / 100), Math.floor(evt.stageY / 100));
-            _this._astar.find();
-            var dis = Math.sqrt(Math.pow((evt.stageX - _this._person.x), 2) + Math.pow((evt.stageY - _this._person.y), 2));
-            var time = dis / _this._speed * 10;
-            if (_this._State == walk) {
-                // console.log("          "+this._State);
-                egret.Tween.removeTweens(_this._person);
+            var i = _this._astar.findPath();
+            if (i == 1) {
+                var dis = Math.sqrt(Math.pow((evt.stageX - _this._person.x), 2) + Math.pow((evt.stageY - _this._person.y), 2));
+                var time = dis / _this._speed * 10;
+                if (_this._State == walk) {
+                    // console.log("          "+this._State);
+                    egret.Tween.removeTweens(_this._person);
+                    egret.Tween.get(_this._person).to({ x: evt.stageX, y: evt.stageY }, time, egret.Ease.sineIn);
+                }
+                else {
+                    _this.SetState(walk);
+                    egret.Tween.get(_this._person).to({ x: evt.stageX, y: evt.stageY }, time, egret.Ease.sineIn);
+                }
+                x = evt.stageX;
+                y = evt.stageY;
                 _this._astar.setStartNode(Math.floor(_this._person.x / 100), Math.floor(_this._person.y / 100));
-                egret.Tween.get(_this._person).to({ x: evt.stageX, y: evt.stageY }, time, egret.Ease.sineIn);
             }
-            else {
-                _this.SetState(walk);
-                egret.Tween.get(_this._person).to({ x: evt.stageX, y: evt.stageY }, time, egret.Ease.sineIn);
+            else if (i == 0) {
+                _this.SetState(idle);
+                i = 2;
             }
-            x = evt.stageX;
-            y = evt.stageY;
+            else if (i == -1) {
+                _this.SetState(idle);
+                i = 2;
+            }
         }, this);
         egret.startTick(function () {
             if (_this._person.x == x && _this._person.y == y) {

@@ -23,7 +23,7 @@ var Astar = (function () {
     p.setStartNode = function (xpos, ypos) {
         this._startx = xpos;
         this._starty = ypos;
-        console.log("起111点x:" + xpos + "y:" + ypos);
+        console.log("起点x:" + xpos + "y:" + ypos);
     };
     p.manhattan = function (node) {
         return Math.abs(node.x - this._endx) * this._straightCost + Math.abs(node.y + this._endy) * this._straightCost;
@@ -42,16 +42,16 @@ var Astar = (function () {
         var straight = dx + dy;
         return this._diagCost * diag + this._straightCost * (straight - 2 * diag);
     };
-    p.find = function () {
-        var mm = new MapNode(this._startx, this._starty);
-        // this._grid.OuttoConsole();
-        // console.log(mm.x+"0.123"+mm.y);
-        console.log("起点x:" + this._startx + "y:" + this._starty);
-        console.log("终点x:" + this._endx + "y:" + this._endy);
-        this.findPath(mm);
-    };
-    p.findPath = function (m) {
-        // 起始点加入open表  
+    /* public find(){
+         var mm=new MapNode(this._startx,this._starty);
+         // this._grid.OuttoConsole();
+         // console.log(mm.x+"0.123"+mm.y);
+         console.log("起点x:"+this._startx+"y:"+this._starty)
+         console.log("终点x:"+this._endx+"y:"+this._endy)
+         this.findPath(mm);
+     }*/
+    p.findPath = function () {
+        var m = new MapNode(this._startx, this._starty); // 起始点加入open表  
         m.g = 0;
         m.h = this.manhattan(m);
         m.parent = null;
@@ -70,7 +70,7 @@ var Astar = (function () {
             if (this._openArray.length > 0)
                 this.adjust_heap(); // 调整堆  
             this._closeArray[this._closeArray.length++] = curr_node; // 当前点加入close表  
-            console.log("x:" + curr_node.x + "          y:" + curr_node.y);
+            console.log("寻路x:" + curr_node.x + "          y:" + curr_node.y);
             if (curr_node.x == this._endx && curr_node.y == this._endy) {
                 is_found = true;
                 break;

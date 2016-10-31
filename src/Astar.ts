@@ -29,7 +29,7 @@ class Astar
         public setStartNode(xpos: number, ypos: number) {
             this._startx = xpos;
             this._starty = ypos;
-              console.log("起111点x:"+xpos+"y:"+ypos)
+              console.log("起点x:"+xpos+"y:"+ypos)
         }
 
         private manhattan(node:MapNode):number{
@@ -52,17 +52,17 @@ class Astar
             return this._diagCost * diag + this._straightCost * (straight - 2 * diag);
         }
 
-        public find(){
+       /* public find(){
             var mm=new MapNode(this._startx,this._starty);
             // this._grid.OuttoConsole();
             // console.log(mm.x+"0.123"+mm.y);
             console.log("起点x:"+this._startx+"y:"+this._starty)
             console.log("终点x:"+this._endx+"y:"+this._endy)
             this.findPath(mm);
-        }
-        private findPath(m:MapNode):number
+        }*/
+        public findPath():number
         {
-                    // 起始点加入open表  
+            var m=new MapNode(this._startx,this._starty);     // 起始点加入open表  
             m.g = 0;  
             m.h = this.manhattan(m);  
             m.parent = null;  
@@ -86,7 +86,7 @@ class Astar
                 this.adjust_heap();               // 调整堆  
             
             this._closeArray[this._closeArray.length++] = curr_node;    // 当前点加入close表  
-            console.log("x:"+curr_node.x+"          y:"+curr_node.y);    
+            console.log("寻路x:"+curr_node.x+"          y:"+curr_node.y);    
             if ( curr_node.x == this._endx && curr_node.y == this._endy )// 终点在close中，结束  
             {  
                 is_found = true;  

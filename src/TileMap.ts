@@ -133,7 +133,7 @@ class TileMap extends egret.DisplayObjectContainer{
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(e:egret.TouchEvent)=>{
             var x=Math.floor(e.stageX/this.MapSize);
             var y=Math.floor(e.stageY/this.MapSize);
-            console.log("xx:"+x+"yy"+y)
+            console.log("鼠标点击点xx:"+x+"yy"+y)
         },this)
     }
      
