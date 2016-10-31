@@ -10,6 +10,10 @@ var Grid = (function () {
     }
     var d = __define,c=Grid,p=c.prototype;
     p.setWalkAble = function (x, y, WalkAble) {
+        this._Grid[x][y].f = 0;
+        this._Grid[x][y].g = 0;
+        this._Grid[x][y].h = 0;
+        this._Grid[x][y].parent = null;
         this._Grid[x][y].x = x;
         this._Grid[x][y].y = y;
         this._Grid[x][y].WalkAble = WalkAble;

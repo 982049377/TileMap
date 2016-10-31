@@ -1,5 +1,5 @@
 class Grid{
-    private _Grid:MapNode[][]=new Array();
+    public _Grid:MapNode[][]=new Array();
     public constructor(x:number, y:number){
         
          for(var i=0;i<x;i++){
@@ -11,6 +11,10 @@ class Grid{
 
     }       
     public setWalkAble(x:number,y:number,WalkAble:boolean){
+        this._Grid[x][y].f=0;
+        this._Grid[x][y].g=0;
+        this._Grid[x][y].h=0;
+        this._Grid[x][y].parent=null;
         this._Grid[x][y].x=x;
         this._Grid[x][y].y=y;
         this._Grid[x][y].WalkAble=WalkAble;

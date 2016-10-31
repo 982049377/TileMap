@@ -34,7 +34,7 @@ class Person extends egret.DisplayObjectContainer{
         this.touchEnabled = true;
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(evt:egret.TouchEvent)=>{
             this._astar.setStartNode(this.x,this.y);
-            this._astar.setEndNode(evt.stageX/100,evt.stageY/100);
+            this._astar.setEndNode(Math.floor(evt.stageX/100),Math.floor(evt.stageY/100));
             this._astar.find();
             var dis=Math.sqrt(Math.pow((evt.stageX-this._person.x),2)+Math.pow((evt.stageY-this._person.y),2));
             var time=dis/this._speed*10;

@@ -8,9 +8,9 @@ var Astar = (function () {
     //     this._Grid = grid;
     // }
     function Astar(grid) {
-        this._path = new Array;
-        this._openArray = new Array;
-        this._closeArray = new Array;
+        this._path = [];
+        this._openArray = [];
+        this._closeArray = [];
         this._straightCost = 1.0;
         this._diagCost = 1.4;
         this._grid = grid;
@@ -43,31 +43,42 @@ var Astar = (function () {
     };
     p.find = function () {
         var mm = new MapNode(this._startx, this._starty);
+        // this._grid.OuttoConsole();
+        // console.log(mm.x+"0.123"+mm.y);
         this.findPath(mm);
     };
     p.findPath = function (m) {
-        this._openArray.push(m); // 起始点加入open表  
+        // 起始点加入open表  
         m.g = 0;
         m.h = this.manhattan(m);
         m.parent = null;
+        this._openArray.push(m);
+        //    console.log(m.x+"0.123"+m.y);       
         if (m.x == this._endx && m.y == this._endy) {
             console.log("起点==终点！\n");
+            return 0;
         }
-        var is_found = 0;
+        var is_found = false;
         while (true) {
             var curr_node = this._openArray[0]; // open表的第一个点一定是f值最小的点(通过堆排序得到的)  
-            this._openArray[0] = this._openArray[--this._openArray.length]; // 最后一个点放到第一个点，然后进行堆调整  
-            this.adjust_heap(0); // 调整堆  
+            // var i=this._openArray.length--;
+            // this._openArray[0]=  this._openArray[i];  // 最后一个点放到第一个点，然后进行堆调整  
+            this._openArray.shift();
+            if (this._openArray.length > 0)
+                this.adjust_heap(); // 调整堆  
             this._closeArray[this._closeArray.length++] = curr_node; // 当前点加入close表  
+            console.log("x:" + curr_node.x + "          y:" + curr_node.y);
             if (curr_node.x == this._endx && curr_node.y == this._endy) {
-                is_found = 1;
+                is_found = true;
                 break;
             }
             this.get_neighbors(curr_node); // 对邻居的处理  
             if (this._openArray.length == 0) {
-                is_found = 0;
+                is_found = false;
                 break;
             }
+            if (this._openArray.length > 0)
+                this.adjust_heap();
         }
         var top = -1;
         if (is_found) {
@@ -85,20 +96,22 @@ var Astar = (function () {
                     console.log("(%d,%d)", this._path[top].x, this._path[top--].y);
                 }
             }
+            return 1;
         }
         else {
-            console.log("么有找到路径");
+            console.log("没有找到路径");
+            return -1;
         }
     };
     p.Has_closeArray = function (M) {
-        for (var i = 0; i < this._closeArray.length; i++) {
-            if (this._closeArray[i] == M)
+        for (var i = 0; i <= this._closeArray.length; i++) {
+            if (this._closeArray[i].compare(M))
                 return true;
         }
         return false;
     };
     p.Has_openArray = function (M) {
-        for (var i = 0; i < this._openArray.length; i++) {
+        for (var i = 0; i <= this._openArray.length; i++) {
             if (this._openArray[i] == M)
                 return true;
         }
@@ -111,69 +124,44 @@ var Astar = (function () {
     };
     // 堆调整  
     //   
-    p.adjust_heap = function (/*i*/ nIndex) {
-        var curr = nIndex;
-        var child = curr * 2 + 1; // 得到左孩子idx( 下标从0开始，所有做孩子是curr*2+1 )  
-        var parent = (curr - 1) / 2; // 得到双亲idx  
-        if (nIndex < 0 || nIndex >= this._openArray.length) {
-            return;
-        }
-        // 往下调整( 要比较左右孩子和cuur parent )  
-        //   
-        while (child < this._openArray.length) {
-            // 小根堆是双亲值小于孩子值  
-            //   
-            if (child + 1 < this._openArray.length && this._openArray.indexOf[child].g + this._openArray.indexOf[child].h > this._openArray.indexOf[child + 1].g + this._openArray.indexOf[child + 1].h) {
-                ++child; // 判断左右孩子大小  
-            }
-            if (this._openArray.indexOf[curr].g + this._openArray.indexOf[curr].h <= this._openArray.indexOf[child].g + this._openArray.indexOf[child].h) {
-                break;
-            }
-            else {
-                this.swap(child, curr); // 交换节点  
-                curr = child; // 再判断当前孩子节点  
-                child = curr * 2 + 1; // 再判断左孩子  
+    p.adjust_heap = function () {
+        var n = 0;
+        for (var i = 0; i < this._openArray.length; i++) {
+            if ((this._openArray[n].g + this._openArray[n].h) > (this._openArray[i].g + this._openArray[i].h)) {
+                n = i;
             }
         }
-        if (curr != nIndex) {
-            return;
-        }
-        // 往上调整( 只需要比较cuur child和parent )  
-        //   
-        while (curr != 0) {
-            if (this._openArray.indexOf[curr].g + this._openArray.indexOf[curr].h >= this._openArray.indexOf[parent].g + this._openArray.indexOf[parent].h) {
-                break;
-            }
-            else {
-                this.swap(curr, parent);
-                curr = parent;
-                parent = (curr - 1) / 2;
-            }
-        }
+        this.swap(n, 0);
     };
     // 判断邻居点是否可以进入open表  
     //   
     p.insert_to_opentable = function (x, y, curr_node, w) {
         var i;
-        // if ( this._grid[x][y].WalkAble != false )        // 不是障碍物  
-        {
-            //  if ( !this.Has_closeArray(this._grid[x][y]) )   // 不在闭表中  
-            {
-                // if ( this.Has_openArray(this._grid[x][y]) ) // 在open表中  
-                {
-                    // 需要判断是否是一条更优化的路径  
-                    //   
-                    // if ( this._grid[x][y].g > curr_node.g + w )    // 如果更优化  
-                    {
-                        this._grid[x][y].g = curr_node.g + w;
-                        this._grid[x][y].parent = curr_node;
-                        for (i = 0; i < this._openArray.length; ++i) {
-                            if (this._openArray.indexOf[i].x == this._grid[x][y].x && this._openArray.indexOf[i].y == this._grid[x][y].y) {
-                                break;
-                            }
-                        }
-                        this.adjust_heap(i); // 下面调整点  
-                    }
+        if (this._grid._Grid[x][y].WalkAble != false) {
+            if (!this.Has_closeArray(this._grid._Grid[x][y])) {
+                // if (this.Has_openArray(this._grid._Grid[x][y])) // 在open表中  
+                // {
+                //     // 需要判断是否是一条更优化的路径  
+                //     //   
+                //     if (this._grid._Grid[x][y].g > curr_node.g + w)    // 如果更优化  
+                //     {
+                //         this._grid._Grid[x][y].g = curr_node.g + w;
+                //         this._grid._Grid[x][y].parent = curr_node;
+                //         for (i = 0; i < this._openArray.length; ++i) {
+                //             if (this._openArray[i].x == this._grid._Grid[x][y].x && this._openArray[i].y == this._grid._Grid[x][y].y) {
+                //                 break;
+                //             }
+                //         }
+                //         if (this._openArray.length > 0)
+                //             this.adjust_heap();                   // 下面调整点  
+                //     }
+                // }
+                // else       
+                if (!this.Has_openArray(this._grid._Grid[x][y])) {
+                    this._grid._Grid[x][y].g = curr_node.g + w;
+                    this._grid._Grid[x][y].h = Math.abs(this._endx - x) + Math.abs(this._endy - y);
+                    this._grid._Grid[x][y].parent = curr_node;
+                    this._openArray.push(this._grid._Grid[x][y]);
                 }
             }
         }
@@ -216,11 +204,16 @@ var Astar = (function () {
 egret.registerClass(Astar,'Astar');
 var MapNode = (function () {
     function MapNode(x, y) {
-        this.costMultiplier = 1.0; //代价因子
         this.x = x;
         this.y = y;
     }
     var d = __define,c=MapNode,p=c.prototype;
+    p.compare = function (n) {
+        if (this.x == n.x && this.x == n.y) {
+            return true;
+        }
+        return false;
+    };
     return MapNode;
 }());
 egret.registerClass(MapNode,'MapNode');

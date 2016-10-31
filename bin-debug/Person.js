@@ -34,7 +34,7 @@ var Person = (function (_super) {
         this.touchEnabled = true;
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP, function (evt) {
             _this._astar.setStartNode(_this.x, _this.y);
-            _this._astar.setEndNode(evt.stageX / 100, evt.stageY / 100);
+            _this._astar.setEndNode(Math.floor(evt.stageX / 100), Math.floor(evt.stageY / 100));
             _this._astar.find();
             var dis = Math.sqrt(Math.pow((evt.stageX - _this._person.x), 2) + Math.pow((evt.stageY - _this._person.y), 2));
             var time = dis / _this._speed * 10;
