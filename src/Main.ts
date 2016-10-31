@@ -136,12 +136,14 @@ class Main extends egret.DisplayObjectContainer {
         
         // var offsetx:number;
         // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
-        //      offsetx=e.stageX-bg.x;
+        //     offsetx=e.stageX-this._bg.x;
         //     this.addEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this)
         // },this);
-        // function onMove(e:egret.TouchEvent){
-        //     bg.x+=offsetx;
-        //     console.log("onMove");
+        // function onMove(e:egret.TouchEvent,Main:Main){
+        //     var main=Main;
+        //     //this._bg.x+=offsetx;
+        //     //console.log("onMove");
+        //     egret.Tween.get(main._bg).to({x:main._bg.x+offsetx},200)
         // }
         // this.addEventListener(egret.TouchEvent.TOUCH_END,()=>{
         //      this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this);

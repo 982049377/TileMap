@@ -50,7 +50,7 @@ var Person = (function (_super) {
                 }
                 x = evt.stageX;
                 y = evt.stageY;
-                _this._astar.setStartNode(Math.floor(_this._person.x / 100), Math.floor(_this._person.y / 100));
+                i = 2;
             }
             else if (i == 0) {
                 _this.SetState(idle);
@@ -62,6 +62,7 @@ var Person = (function (_super) {
             }
         }, this);
         egret.startTick(function () {
+            _this._astar.setStartNode(Math.floor(_this._person.x / 100), Math.floor(_this._person.y / 100));
             if (_this._person.x == x && _this._person.y == y) {
                 _this.SetState(idle);
             }

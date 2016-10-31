@@ -52,13 +52,13 @@ class Person extends egret.DisplayObjectContainer{
               }
               x=evt.stageX;
               y=evt.stageY;
-              this._astar.setStartNode(Math.floor(this._person.x/100),Math.floor(this._person.y/100));
+              i=2;
             }
             else
               if(i==0)
               {
-                this.SetState(idle);
-                i=2;
+                  this.SetState(idle);
+                  i=2;
               }
               else
                 if(i==-1)
@@ -67,10 +67,12 @@ class Person extends egret.DisplayObjectContainer{
                     i=2;
                 }
         },this);
+
         egret.startTick(():boolean=>{
-        if(this._person.x==x && this._person.y==y){
-                this.SetState(idle);
-        }
+            this._astar.setStartNode(Math.floor(this._person.x/100),Math.floor(this._person.y/100));
+            if(this._person.x==x && this._person.y==y){
+                    this.SetState(idle);
+            }
         return false;
         },this);
 
