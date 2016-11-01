@@ -4,6 +4,7 @@ var Person = (function (_super) {
         _super.call(this);
         this._person = new egret.Bitmap();
         this._speed = 1.5;
+        this.mapsize = 100;
     }
     var d = __define,c=Person,p=c.prototype;
     p.SetState = function (e) {
@@ -37,37 +38,62 @@ var Person = (function (_super) {
             _this._astar.setEndNode(Math.floor(evt.stageX / 100), Math.floor(evt.stageY / 100));
             var i = _this._astar.findPath();
             if (i == 1) {
-                var dis = Math.sqrt(Math.pow((evt.stageX - _this._person.x), 2) + Math.pow((evt.stageY - _this._person.y), 2));
-                var time = dis / _this._speed * 10;
                 if (_this._State == walk) {
                     // console.log("          "+this._State);
                     egret.Tween.removeTweens(_this._person);
-                    egret.Tween.get(_this._person).to({ x: evt.stageX, y: evt.stageY }, time, egret.Ease.sineIn);
+                    var n = _this._astar._path.length;
+                    for (var i = 1; i <= _this._astar._path.length; i++) {
+                        var x1 = _this._astar._path[n - i - 1].x * _this.mapsize;
+                        var y1 = _this._astar._path[n - i - 1].y * _this.mapsize;
+                        var dis = Math.sqrt(Math.pow((x1 - _this._person.x), 2) + Math.pow((y1 - _this._person.y), 2));
+                        var time = dis / _this._speed * 10;
+                        egret.Tween.get(_this._person).to({ x: x1, y: y1 }, time, egret.Ease.sineIn);
+                    }
                 }
                 else {
                     _this.SetState(walk);
-                    egret.Tween.get(_this._person).to({ x: evt.stageX, y: evt.stageY }, time, egret.Ease.sineIn);
+                    var n = _this._astar._path.length;
+                    for (var i = 1; i <= _this._astar._path.length; i++) {
+                        var x1 = _this._astar._path[n - i].x * _this.mapsize;
+                        var y1 = _this._astar._path[n - i].y * _this.mapsize;
+                        var dis = Math.sqrt(Math.pow((x1 - _this._person.x), 2) + Math.pow((y1 - _this._person.y), 2));
+                        var time = dis / _this._speed * 10;
+                        egret.Tween.get(_this._person).to({ x: x1, y: y1 }, time, egret.Ease.sineIn);
+                        console.log("x1:" + x1 + "y1:" + y1);
+                    }
                 }
+                _this.setAstar();
                 x = evt.stageX;
                 y = evt.stageY;
                 i = 2;
+                console.log("evt.x:" + evt.stageX + "        evt.y:" + evt.stageY);
+                console.log("person.x:" + _this._person.x + "        person.y:" + _this._person.y);
             }
             else if (i == 0) {
                 _this.SetState(idle);
+                _this.setAstar();
                 i = 2;
             }
             else if (i == -1) {
                 _this.SetState(idle);
+                _this.setAstar();
                 i = 2;
             }
         }, this);
         egret.startTick(function () {
-            _this._astar.setStartNode(Math.floor(_this._person.x / 100), Math.floor(_this._person.y / 100));
+            // if(this._State==idle){
+            //     this._astar.setStartNode(Math.floor(this._person.x/100),Math.floor(this._person.y/100));
+            //     this._astar.empty();
+            // }
             if (_this._person.x == x && _this._person.y == y) {
                 _this.SetState(idle);
             }
             return false;
         }, this);
+    };
+    p.setAstar = function () {
+        this._astar.setStartNode(Math.floor(this._person.x / 100), Math.floor(this._person.y / 100));
+        this._astar.empty();
     };
     p.createBitmapByName = function (name) {
         var result = new egret.Bitmap();

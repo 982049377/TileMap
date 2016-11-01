@@ -63,14 +63,12 @@ var Astar = (function () {
         }
         var is_found = false;
         while (true) {
-            var curr_node = this._openArray[0]; // open表的第一个点一定是f值最小的点(通过堆排序得到的)  
-            // var i=this._openArray.length--;
-            // this._openArray[0]=  this._openArray[i];  // 最后一个点放到第一个点，然后进行堆调整  
-            this._openArray.shift();
             if (this._openArray.length > 0)
-                this.adjust_heap(); // 调整堆  
+                this.adjust_heap(); // 调整开放列表  
+            var curr_node = this._openArray[0]; // open表的第一个点一定是f值最小的点(通过堆排序得到的)  
+            this._openArray.shift();
             this._closeArray[this._closeArray.length++] = curr_node; // 当前点加入close表  
-            console.log("寻路x:" + curr_node.x + "          y:" + curr_node.y);
+            //console.log("寻路x:"+curr_node.x+"          y:"+curr_node.y);    
             if (curr_node.x == this._endx && curr_node.y == this._endy) {
                 is_found = true;
                 break;
@@ -105,6 +103,12 @@ var Astar = (function () {
             console.log("没有找到路径");
             return -1;
         }
+    };
+    p.empty = function () {
+        for (var i = 0; i < this._closeArray.length; i++)
+            this._closeArray.shift();
+        for (var i = 0; i < this._openArray.length; i++)
+            this._openArray.shift();
     };
     p.Has_closeArray = function (M) {
         for (var i = 0; i <= this._closeArray.length; i++) {

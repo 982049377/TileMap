@@ -5,7 +5,7 @@ class Astar
         public _endx:number;
         public _endy:number;
         private _grid:Grid;
-        private _path:MapNode[]=[];
+        public _path:MapNode[]=[];
         private _openArray:MapNode[]=[];
         private _closeArray:MapNode[]=[];
         private _straightCost:number=1.0;
@@ -78,20 +78,19 @@ class Astar
   
         while( true )  
         {  
-            var curr_node:MapNode = this._openArray[0];      // open表的第一个点一定是f值最小的点(通过堆排序得到的)  
-           // var i=this._openArray.length--;
-           // this._openArray[0]=  this._openArray[i];  // 最后一个点放到第一个点，然后进行堆调整  
-            this._openArray.shift();
             if(this._openArray.length>0)
-                this.adjust_heap();               // 调整堆  
-            
+            this.adjust_heap();                              // 调整开放列表  
+            var curr_node:MapNode = this._openArray[0];      // open表的第一个点一定是f值最小的点(通过堆排序得到的)  
+            this._openArray.shift();
+
             this._closeArray[this._closeArray.length++] = curr_node;    // 当前点加入close表  
-            console.log("寻路x:"+curr_node.x+"          y:"+curr_node.y);    
+            //console.log("寻路x:"+curr_node.x+"          y:"+curr_node.y);    
             if ( curr_node.x == this._endx && curr_node.y == this._endy )// 终点在close中，结束  
             {  
                 is_found = true;  
                 break;  
             }  
+
             this.get_neighbors( curr_node );           // 对邻居的处理  
             if ( this._openArray.length == 0 )             // 没有路径到达  
             {  
@@ -123,6 +122,7 @@ class Astar
                 {  
                     console.log("(%d,%d)",this._path[top].x, this._path[top--].y);  
                 }  
+
             }  
             return 1;
         }  
@@ -133,7 +133,12 @@ class Astar
         }  
            
     }  
-
+    public empty(){
+        for(var i=0;i<this._closeArray.length;i++)
+            this._closeArray.shift();
+        for(var i=0;i<this._openArray.length;i++)
+            this._openArray.shift();
+    }
         
     private Has_closeArray(M:MapNode):boolean{
         for(var i=0;i<=this._closeArray.length;i++){
