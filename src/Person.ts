@@ -35,6 +35,7 @@ class Person extends egret.DisplayObjectContainer{
          var idle:Idle=new Idle (this);
             this.touchEnabled = true;
             this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(evt:egret.TouchEvent)=>{
+                this.setAstar(); 
                 this._astar.setEndNode(Math.floor(evt.stageX/100),Math.floor(evt.stageY/100));
                 var i=this._astar.findPath();
                 if(i==1){
@@ -51,8 +52,8 @@ class Person extends egret.DisplayObjectContainer{
                 ///egret.Tween.get(this._person).to({x:evt.stageX,y:evt.stageY},200, egret.Ease.sineIn );
                // this.setAstar(); 
                 i=2;
-                console.log("evt.x:"+evt.stageX+"        evt.y:"+evt.stageY); 
-                console.log("person.x:"+this._person.x+"        person.y:"+this._person.y); 
+               // console.log("evt.x:"+evt.stageX+"        evt.y:"+evt.stageY); 
+               // console.log("person.x:"+this._person.x+"        person.y:"+this._person.y); 
                 }
                 else
                 if(i==0)
@@ -79,7 +80,7 @@ class Person extends egret.DisplayObjectContainer{
                 if(this._astar._path[0]!=null){
                     if(this._person.x==this._astar._path[0].x*this.mapsize && this._person.y==this._astar._path[0].y*this.mapsize){
                             this.SetState(idle);
-                            this.setAstar(); 
+                            //this.setAstar(); 
                     }
                 }
                 return false;
@@ -101,8 +102,8 @@ class Person extends egret.DisplayObjectContainer{
             var dis=Math.sqrt(Math.pow((x1-this._person.x),2)+Math.pow((y1-this._person.y),2));
             var time=dis/this._speed*10;
             egret.Tween.get(this._person).to({x:x1,y:y1},time, egret.Ease.sineIn );
-            console.log("x1:"+x1+"y1:"+y1);
-            console.log("111person.x:"+this._person.x+"        person.y:"+this._person.y); 
+            //console.log("x1:"+x1+"y1:"+y1);
+           // console.log("111person.x:"+this._person.x+"        person.y:"+this._person.y); 
             egret.startTick(():boolean=>{
                 if(x1==this._person.x&&y1==this._person.y)
                     this.Move();
@@ -112,7 +113,7 @@ class Person extends egret.DisplayObjectContainer{
         }
 
         private setAstar():void{
-            egret.Tween.removeTweens(this._person);
+             egret.Tween.removeTweens(this._person);
             this._astar.setStartNode(Math.floor(this._person.x/100),Math.floor(this._person.y/100));
             this._astar.empty();
             this.i=1;
