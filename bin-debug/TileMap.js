@@ -106,6 +106,8 @@ var TileMap = (function (_super) {
             { x: 9, y: 8, WalkAble: false, image: "water_jpg" },
             { x: 9, y: 9, WalkAble: true, image: "road_jpg" },
         ];
+        //this._grid= new Grid(10,10);
+        //this._astar=new Astar(this._grid);
         //this.Create();
     }
     var d = __define,c=TileMap,p=c.prototype;
@@ -123,6 +125,7 @@ var TileMap = (function (_super) {
             var y = Math.floor(e.stageY / _this.MapSize);
             console.log("鼠标点击点xx:" + x + "yy" + y);
         }, this);
+        this._astar = new Astar(this._grid);
     };
     return TileMap;
 }(egret.DisplayObjectContainer));
@@ -133,14 +136,13 @@ var Tile = (function (_super) {
         _super.call(this);
         this.date = Date;
         this.MapSize = mapsize;
-        this.grid = grid;
         var Bitmap = new egret.Bitmap();
         Bitmap.texture = RES.getRes(Date.image);
         Bitmap.x = Date.x * this.MapSize;
         Bitmap.y = Date.y * this.MapSize;
         grid.setWalkAble(Date.x, Date.y, Date.WalkAble);
         this.addChild(Bitmap);
-        //  grid.OuttoConsole();
+        //grid.OuttoConsole();
     }
     var d = __define,c=Tile,p=c.prototype;
     return Tile;

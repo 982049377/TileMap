@@ -31,7 +31,8 @@ var Main = (function (_super) {
     //public sssssss;
     function Main() {
         _super.call(this);
-        this._path = new Array;
+        this.i = 1;
+        this._speed = 1.5;
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
     var d = __define,c=Main,p=c.prototype;
@@ -98,18 +99,41 @@ var Main = (function (_super) {
             this.loadingView.setProgress(event.itemsLoaded, event.itemsTotal);
         }
     };
+    // private _grid:Grid;
+    // private _path:Array<MapNode>=new Array;
     p.createGameScene = function () {
+        var _this = this;
         this._bg = new TileMap();
-        // this._bg.x=0;
-        // this._bg.y=0;
         this.addChild(this._bg);
         this._bg.Create();
-        this._grid = this._bg._grid;
-        this._astar = new Astar(this._grid);
         this._player = new Person();
-        this._player.firstCreat(this._astar);
         this.addChild(this._player);
-        this._player.Creat();
+        this._player.firstCreat();
+        //this._player.Creat();
+        var idle = new Idle(this._player);
+        var walk = new Walk(this._player);
+        this.touchEnabled = true;
+        this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP, function (evt) {
+            _this.setAstar();
+            _this._bg._astar.setEndNode(Math.floor(evt.stageX / 100), Math.floor(evt.stageY / 100));
+            var i = _this._bg._astar.findPath();
+            if (i == 1) {
+                _this._player.SetState(walk);
+                egret.Tween.removeTweens(_this._player);
+                _this.Move();
+                i = 2;
+            }
+            else if (i == 0) {
+                _this._player.SetState(idle);
+                //this.setAstar();
+                i = 2;
+            }
+            else if (i == -1) {
+                _this._player.SetState(idle);
+                //this.setAstar();
+                i = 2;
+            }
+        }, this);
         // var offsetx:number;
         // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
         //     offsetx=e.stageX-this._bg.x;
@@ -124,6 +148,34 @@ var Main = (function (_super) {
         // this.addEventListener(egret.TouchEvent.TOUCH_END,()=>{
         //      this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this);
         // },this)
+    };
+    p.Move = function () {
+        var _this = this;
+        var n = this._bg._astar._path.length;
+        this.i++;
+        if (this.i > n) {
+            egret.Tween.get(this._player).to({ x: x1, y: y1 }, time, egret.Ease.sineIn);
+            return false;
+        }
+        var x1 = this._bg._astar._path[n - this.i].x * this._bg.MapSize;
+        var y1 = this._bg._astar._path[n - this.i].y * this._bg.MapSize;
+        var dis = Math.sqrt(Math.pow((x1 - this._player.x), 2) + Math.pow((y1 - this._player.y), 2));
+        var time = dis / this._speed * 10;
+        egret.Tween.get(this._player).to({ x: x1, y: y1 }, time, egret.Ease.sineIn);
+        //console.log("x1:"+x1+"y1:"+y1);
+        // console.log("111person.x:"+this._person.x+"        person.y:"+this._person.y); 
+        egret.startTick(function () {
+            if (x1 == _this._player.x && y1 == _this._player.y)
+                _this.Move();
+            return false;
+        }, this);
+        return false;
+    };
+    p.setAstar = function () {
+        egret.Tween.removeTweens(this._player);
+        this._bg._astar.setStartNode(Math.floor(this._player.x / 100), Math.floor(this._player.y / 100));
+        this._bg._astar.empty();
+        this.i = 1;
     };
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。

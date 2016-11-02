@@ -2,8 +2,11 @@ class TileMap extends egret.DisplayObjectContainer{
 
     public MapSize=100;
     public _grid:Grid;
+    public _astar:Astar;
     constructor(){
-        super();
+        super();  
+        //this._grid= new Grid(10,10);
+        //this._astar=new Astar(this._grid);
         //this.Create();
     }
 
@@ -135,6 +138,7 @@ class TileMap extends egret.DisplayObjectContainer{
             var y=Math.floor(e.stageY/this.MapSize);
             console.log("鼠标点击点xx:"+x+"yy"+y)
         },this)
+         this._astar=new Astar(this._grid);
     }
      
 }
@@ -150,19 +154,17 @@ interface TileDate{
 class Tile extends egret.DisplayObjectContainer{
     date:TileDate;
     MapSize:number;
-    grid:Grid;
     constructor(Date:TileDate,mapsize:number,grid:Grid) {
         super();
         this.date=Date;
         this.MapSize=mapsize;
-        this.grid=grid;
         var Bitmap=new egret.Bitmap();
         Bitmap.texture=RES.getRes(Date.image);
         Bitmap.x=Date.x*this.MapSize;
         Bitmap.y=Date.y*this.MapSize;
         grid.setWalkAble(Date.x,Date.y,Date.WalkAble);
         this.addChild(Bitmap);
-      //  grid.OuttoConsole();
+        //grid.OuttoConsole();
     }
 
 }

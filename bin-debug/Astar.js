@@ -1,12 +1,4 @@
 var Astar = (function () {
-    // public constructor(x:number, y:number,xx:number,yy:number,grid:Grid)
-    // {
-    //     this._startx = x;
-    //     this._starty = y;
-    //     this._endx = xx;
-    //     this._endy = y;
-    //     this._Grid = grid;
-    // }
     function Astar(grid) {
         this._path = [];
         this._openArray = [];

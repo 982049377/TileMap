@@ -1,34 +1,42 @@
 class Person extends egret.DisplayObjectContainer{
       public _person:egret.Bitmap=new egret.Bitmap();
       private _State:State;
-      private _speed:number=1.5;
-      private _astar:Astar;
-      private mapsize=100;
+      //private _speed:number=1.5;
+      //private _astar:Astar;
+      //private mapsize=100;
       public constructor() {
-        super();
+            super();
       }
       public SetState(e:State){
-          if(this._State!=e){
-              this._State.onExit();
-          }
-          this._State=e;
-          this._State.onEnter();
+            if(this._State!=e){
+                this._State.onExit();
+            }
+            this._State=e;
+            this._State.onEnter();
         }
-      public firstCreat(astar:Astar){
-        this._astar=astar;
-        this._person=this.createBitmapByName("10000_png")
-        this._person.x=0;
-        this._person.y=200;
-        this.setAnchor(this._person);
-        this._astar.setStartNode(Math.floor(this._person.x/100),Math.floor(this._person.y/100));
-        this.addChild(this._person);
-        var idle:Idle=new Idle (this);
-        var walk:Walk=new Walk(this);
-        this._State=idle;
-        idle.onEnter();
+      public firstCreat(){
+            //this._astar=astar;
+            this._person=this.createBitmapByName("10000_png")
+            this._person.x=0;
+            this._person.y=200;
+            this.setAnchor(this._person);
+          //  this._astar.setStartNode(Math.floor(this._person.x/100),Math.floor(this._person.y/100));
+            this.addChild(this._person);
+            var idle:Idle=new Idle (this);
+            //var walk:Walk=new Walk(this);
+            this._State=idle;
+            this._State.onEnter();
       }
-    
+    //   public Move(){
+    //         var walk:Walk=new Walk(this);
+    //         var idle:Idle=new Idle (this);
+    //         if(this._State==walk){
 
+    //         }else{
+    //             this.SetState(walk);
+    //         }
+    //   }
+/*
       public Creat(){
       
          var walk:Walk=new Walk(this);
@@ -70,13 +78,7 @@ class Person extends egret.DisplayObjectContainer{
                         i=2;
                     }
             },this);
-            
-
             egret.startTick(():boolean=>{
-                // if(this._State==idle){
-                //     this._astar.setStartNode(Math.floor(this._person.x/100),Math.floor(this._person.y/100));
-                //     this._astar.empty();
-                // }
                 if(this._astar._path[0]!=null){
                     if(this._person.x==this._astar._path[0].x*this.mapsize && this._person.y==this._astar._path[0].y*this.mapsize){
                             this.SetState(idle);
@@ -90,6 +92,7 @@ class Person extends egret.DisplayObjectContainer{
 
         
         private i=1;
+
         private Move():boolean{
             var n=this._astar._path.length;
             this.i++;
@@ -119,7 +122,7 @@ class Person extends egret.DisplayObjectContainer{
             this.i=1;
         }
 
-
+*/
         public createBitmapByName(name:string):egret.Bitmap {
         var result = new egret.Bitmap();
         var texture:egret.Texture = RES.getRes(name);

@@ -11,14 +11,6 @@ class Astar
         private _straightCost:number=1.0;
         private _diagCost:number = 1.4;
 
-        // public constructor(x:number, y:number,xx:number,yy:number,grid:Grid)
-        // {
-        //     this._startx = x;
-        //     this._starty = y;
-        //     this._endx = xx;
-        //     this._endy = y;
-        //     this._Grid = grid;
-        // }
         public constructor(grid:Grid){
             this._grid=grid;
         }

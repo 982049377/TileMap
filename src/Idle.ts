@@ -7,11 +7,11 @@ class Idle implements State{
         private count:number=-1;
         private i:number=0;
 
-        onEnter(){
+        public onEnter(){
             egret.startTick(this.PlayIdle,this);
         }
 
-        onExit(){
+        public onExit(){
             egret.stopTick(this.PlayIdle,this);
             //console.log("IdleExit");
         }
