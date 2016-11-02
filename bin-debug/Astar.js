@@ -97,12 +97,15 @@ var Astar = (function () {
         }
     };
     p.empty = function () {
-        for (var i = 0; i < this._closeArray.length; i++)
+        var n = this._closeArray.length;
+        for (var i = 0; i < n; i++)
             this._closeArray.shift();
-        for (var i = 0; i < this._openArray.length; i++)
+        var n = this._openArray.length;
+        for (var i = 0; i < n; i++)
             this._openArray.shift();
-        for (var i = 0; i < this._path.length; i++)
-            this._openArray.shift();
+        var n = this._path.length;
+        for (var i = 0; i < n; i++)
+            this._path.shift();
     };
     p.Has_closeArray = function (M) {
         for (var i = 0; i <= this._closeArray.length; i++) {

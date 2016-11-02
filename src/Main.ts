@@ -134,43 +134,47 @@ class Main extends egret.DisplayObjectContainer {
         var idle:Idle=new Idle (this._player);
         var walk:Walk=new Walk(this._player);
         this.touchEnabled = true;
-            this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(evt:egret.TouchEvent)=>{
-                this.setAstar(); 
-                this._bg._astar.setStartNode(Math.floor(this._player.x/100),Math.floor(this._player.y/100));
-                this._bg._astar.setEndNode(Math.floor(evt.stageX/100),Math.floor(evt.stageY/100));
-                var i=this._bg._astar.findPath();
-                if(i==1){
-                    this._player.SetState(walk)
-                    egret.Tween.removeTweens(this._player);
-                    this.Move();
-                   
-                    i=2
-                }
-                else
-                if(i==0)
+        this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(evt:egret.TouchEvent)=>{
+            this.setAstar(); 
+            this._bg._astar.setStartNode(Math.floor(this._player.x/100),Math.floor(this._player.y/100));
+            this._bg._astar.setEndNode(Math.floor(evt.stageX/100),Math.floor(evt.stageY/100));
+            var i=this._bg._astar.findPath();
+            if(i==1){
+                this._player.SetState(walk)
+                egret.Tween.removeTweens(this._player);
+                // this.addEventListener(egret.Event.ENTER_FRAME, this.onEnterFrame, this);
+                // this.onEnterFrame;
+                this.Move();
+                
+                i=2
+            }
+            else
+            if(i==0)
+            {
+                this._player.SetState(idle);
+                this.setAstar();
+                i=2;
+            }
+            else
+                if(i==-1)
                 {
                     this._player.SetState(idle);
                     this.setAstar();
                     i=2;
                 }
-                else
-                    if(i==-1)
-                    {
-                        this._player.SetState(idle);
-                        this.setAstar();
-                        i=2;
-                    }
-                   
-            },this);
-            egret.startTick(():boolean=>{
-                if(this._bg._astar._path[0]!=null){
-                    if(Math.floor(this._player.x/this._bg.MapSize)==this._bg._astar._path[0].x&& Math.floor(this._player.y/this._bg.MapSize)==this._bg._astar._path[0].y){
-                        this._player.SetState(idle);
-                        //this.setAstar(); 
-                    }
+                
+        },this);
+        egret.startTick(():boolean=>{
+            if(this._bg._astar._path[0]!=null){
+                if(Math.floor(this._player.x/this._bg.MapSize)==this._bg._astar._path[0].x&& Math.floor(this._player.y/this._bg.MapSize)==this._bg._astar._path[0].y){
+                    this._player.SetState(idle);
+                    //this.setAstar(); 
                 }
-                return false;
-            },this);
+            }
+            return false;
+        },this);
+
+        /***地图 */
         // var offsetx:number;
         // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
         //     offsetx=e.stageX-this._bg.x;
@@ -186,6 +190,30 @@ class Main extends egret.DisplayObjectContainer {
         //      this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this);
         // },this)
     }
+/**帧事件' */
+    // private onEnterFrame(event: egret.Event): void {
+    //     console.log('hi');
+    //     var n=this._bg._astar._path.length;
+    //     var targetX: number = this._bg._astar._path[n-this.i].x * this._bg.MapSize + this._bg.MapSize / 2;
+    //     var targetY: number = this._bg._astar._path[n-this.i].y * this._bg.MapSize + this._bg.MapSize / 2;
+    //     var dx: number = targetX - this._player.x;
+    //     var dy: number = targetY - this._player.y;
+    //     var dist: number = Math.sqrt(dx * dx + dy * dy);
+    //     if (dist < 0.5) {
+    //         this.i++;
+    //         if (this.i >= this._bg._astar._path.length) {
+    //             this.removeEventListener(egret.Event.ENTER_FRAME, this.onEnterFrame, this);
+    //             console.log('remove');
+    //         }
+    //     }
+    //     else {
+    //         this._player.x += dx * .25;
+    //         this._player.y += dy * .25;
+    //         //this._player.Move(new Vector2(targetX, targetY), this.inputPos);
+    //     }
+    // }
+
+
     private i=1;
     private _speed:number=1.5;
     

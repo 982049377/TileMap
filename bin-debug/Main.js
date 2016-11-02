@@ -31,6 +31,28 @@ var Main = (function (_super) {
     //public sssssss;
     function Main() {
         _super.call(this);
+        /**帧事件' */
+        // private onEnterFrame(event: egret.Event): void {
+        //     console.log('hi');
+        //     var n=this._bg._astar._path.length;
+        //     var targetX: number = this._bg._astar._path[n-this.i].x * this._bg.MapSize + this._bg.MapSize / 2;
+        //     var targetY: number = this._bg._astar._path[n-this.i].y * this._bg.MapSize + this._bg.MapSize / 2;
+        //     var dx: number = targetX - this._player.x;
+        //     var dy: number = targetY - this._player.y;
+        //     var dist: number = Math.sqrt(dx * dx + dy * dy);
+        //     if (dist < 0.5) {
+        //         this.i++;
+        //         if (this.i >= this._bg._astar._path.length) {
+        //             this.removeEventListener(egret.Event.ENTER_FRAME, this.onEnterFrame, this);
+        //             console.log('remove');
+        //         }
+        //     }
+        //     else {
+        //         this._player.x += dx * .25;
+        //         this._player.y += dy * .25;
+        //         //this._player.Move(new Vector2(targetX, targetY), this.inputPos);
+        //     }
+        // }
         this.i = 1;
         this._speed = 1.5;
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -125,6 +147,8 @@ var Main = (function (_super) {
             if (i == 1) {
                 _this._player.SetState(walk);
                 egret.Tween.removeTweens(_this._player);
+                // this.addEventListener(egret.Event.ENTER_FRAME, this.onEnterFrame, this);
+                // this.onEnterFrame;
                 _this.Move();
                 i = 2;
             }
@@ -147,6 +171,7 @@ var Main = (function (_super) {
             }
             return false;
         }, this);
+        /***地图 */
         // var offsetx:number;
         // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
         //     offsetx=e.stageX-this._bg.x;
