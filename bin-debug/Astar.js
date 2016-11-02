@@ -101,6 +101,8 @@ var Astar = (function () {
             this._closeArray.shift();
         for (var i = 0; i < this._openArray.length; i++)
             this._openArray.shift();
+        for (var i = 0; i < this._path.length; i++)
+            this._openArray.shift();
     };
     p.Has_closeArray = function (M) {
         for (var i = 0; i <= this._closeArray.length; i++) {

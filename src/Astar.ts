@@ -130,6 +130,8 @@ class Astar
             this._closeArray.shift();
         for(var i=0;i<this._openArray.length;i++)
             this._openArray.shift();
+        for(var i=0;i<this._path.length;i++)
+            this._openArray.shift();
     }
         
     private Has_closeArray(M:MapNode):boolean{

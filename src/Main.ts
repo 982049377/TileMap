@@ -126,6 +126,8 @@ class Main extends egret.DisplayObjectContainer {
         this._player=new Person();
         this._player.x=0;
         this._player.y=200;
+        this._player.scaleX=0.8;
+        this._player.scaleY=0.8;
         this.addChild(this._player);
         this._player.firstCreat();
         //this._player.Creat();
@@ -141,28 +143,30 @@ class Main extends egret.DisplayObjectContainer {
                     this._player.SetState(walk)
                     egret.Tween.removeTweens(this._player);
                     this.Move();
+                   
                     i=2
                 }
                 else
                 if(i==0)
                 {
                     this._player.SetState(idle);
-                    //this.setAstar();
+                    this.setAstar();
                     i=2;
                 }
                 else
                     if(i==-1)
                     {
                         this._player.SetState(idle);
-                        //this.setAstar();
+                        this.setAstar();
                         i=2;
                     }
+                   
             },this);
-        egret.startTick(():boolean=>{
+            egret.startTick(():boolean=>{
                 if(this._bg._astar._path[0]!=null){
-                    if(this._player.x==this._bg._astar._path[0].x*this._bg.MapSize && this._player.y==this._bg._astar._path[0].y*this._bg.MapSize){
-                            this._player.SetState(idle);
-                            //this.setAstar(); 
+                    if(Math.floor(this._player.x/this._bg.MapSize)==this._bg._astar._path[0].x&& Math.floor(this._player.y/this._bg.MapSize)==this._bg._astar._path[0].y){
+                        this._player.SetState(idle);
+                        //this.setAstar(); 
                     }
                 }
                 return false;
@@ -192,13 +196,13 @@ class Main extends egret.DisplayObjectContainer {
             egret.Tween.get(this._player).to({x:x1,y:y1},time, egret.Ease.sineIn );
             return false;
         }
-        var x1=this._bg._astar._path[n-this.i].x*this._bg.MapSize;
-        var y1=this._bg._astar._path[n-this.i].y*this._bg.MapSize;
+        var x1=this._bg._astar._path[n-this.i].x*this._bg.MapSize+this._bg.MapSize/2;
+        var y1=this._bg._astar._path[n-this.i].y*this._bg.MapSize+this._bg.MapSize/2;
         var dis=Math.sqrt(Math.pow((x1-this._player.x),2)+Math.pow((y1-this._player.y),2));
         var time=dis/this._speed*10;
         egret.Tween.get(this._player).to({x:x1,y:y1},time, egret.Ease.sineIn );
-        //console.log("x1:"+x1+"y1:"+y1);
-        // console.log("111person.x:"+this._person.x+"        person.y:"+this._person.y); 
+        console.log("x1:"+x1+"y1:"+y1);
+        console.log("111person.x:"+this._player.x+"person.y:"+this._player.y); 
         egret.startTick(():boolean=>{
             if(x1==this._player.x&&y1==this._player.y)
                 this.Move();
