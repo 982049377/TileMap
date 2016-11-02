@@ -29,7 +29,7 @@ class Astar
         public setStartNode(xpos: number, ypos: number) {
             this._startx = xpos;
             this._starty = ypos;
-              console.log("起点x:"+xpos+"y:"+ypos)
+            console.log("起点x:"+xpos+"y:"+ypos)
         }
 
         private manhattan(node:MapNode):number{
