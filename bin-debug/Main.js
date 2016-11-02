@@ -107,6 +107,8 @@ var Main = (function (_super) {
         this.addChild(this._bg);
         this._bg.Create();
         this._player = new Person();
+        this._player.x = 0;
+        this._player.y = 200;
         this.addChild(this._player);
         this._player.firstCreat();
         //this._player.Creat();
@@ -115,6 +117,7 @@ var Main = (function (_super) {
         this.touchEnabled = true;
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP, function (evt) {
             _this.setAstar();
+            _this._bg._astar.setStartNode(Math.floor(_this._player.x / 100), Math.floor(_this._player.y / 100));
             _this._bg._astar.setEndNode(Math.floor(evt.stageX / 100), Math.floor(evt.stageY / 100));
             var i = _this._bg._astar.findPath();
             if (i == 1) {
@@ -133,6 +136,14 @@ var Main = (function (_super) {
                 //this.setAstar();
                 i = 2;
             }
+        }, this);
+        egret.startTick(function () {
+            if (_this._bg._astar._path[0] != null) {
+                if (_this._player.x == _this._bg._astar._path[0].x * _this._bg.MapSize && _this._player.y == _this._bg._astar._path[0].y * _this._bg.MapSize) {
+                    _this._player.SetState(idle);
+                }
+            }
+            return false;
         }, this);
         // var offsetx:number;
         // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{

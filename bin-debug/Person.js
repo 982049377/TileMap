@@ -18,8 +18,8 @@ var Person = (function (_super) {
     p.firstCreat = function () {
         //this._astar=astar;
         this._person = this.createBitmapByName("10000_png");
-        this._person.x = 0;
-        this._person.y = 200;
+        // this._person.x=0;
+        // this._person.y=200;
         this.setAnchor(this._person);
         //  this._astar.setStartNode(Math.floor(this._person.x/100),Math.floor(this._person.y/100));
         this.addChild(this._person);

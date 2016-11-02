@@ -124,6 +124,8 @@ class Main extends egret.DisplayObjectContainer {
         this._bg.Create();
 
         this._player=new Person();
+        this._player.x=0;
+        this._player.y=200;
         this.addChild(this._player);
         this._player.firstCreat();
         //this._player.Creat();
@@ -132,6 +134,7 @@ class Main extends egret.DisplayObjectContainer {
         this.touchEnabled = true;
             this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(evt:egret.TouchEvent)=>{
                 this.setAstar(); 
+                this._bg._astar.setStartNode(Math.floor(this._player.x/100),Math.floor(this._player.y/100));
                 this._bg._astar.setEndNode(Math.floor(evt.stageX/100),Math.floor(evt.stageY/100));
                 var i=this._bg._astar.findPath();
                 if(i==1){
@@ -155,7 +158,15 @@ class Main extends egret.DisplayObjectContainer {
                         i=2;
                     }
             },this);
-
+        egret.startTick(():boolean=>{
+                if(this._bg._astar._path[0]!=null){
+                    if(this._player.x==this._bg._astar._path[0].x*this._bg.MapSize && this._player.y==this._bg._astar._path[0].y*this._bg.MapSize){
+                            this._player.SetState(idle);
+                            //this.setAstar(); 
+                    }
+                }
+                return false;
+            },this);
         // var offsetx:number;
         // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
         //     offsetx=e.stageX-this._bg.x;
@@ -196,11 +207,11 @@ class Main extends egret.DisplayObjectContainer {
         return false;
      }
      private setAstar():void{
-             egret.Tween.removeTweens(this._player);
-            this._bg._astar.setStartNode(Math.floor(this._player.x/100),Math.floor(this._player.y/100));
-            this._bg._astar.empty();
-            this.i=1;
-        }
+        egret.Tween.removeTweens(this._player);
+        this._bg._astar.setStartNode(Math.floor(this._player.x/100),Math.floor(this._player.y/100));
+        this._bg._astar.empty();
+        this.i=1;
+    }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
      * Create a Bitmap object according to name keyword.As for the property of name please refer to the configuration file of resources/resource.json.
