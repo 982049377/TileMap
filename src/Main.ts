@@ -116,11 +116,14 @@ class Main extends egret.DisplayObjectContainer {
      */
     private _player:Person;
     private _bg:TileMap;
+    private _container:egret.DisplayObjectContainer;
     // private _grid:Grid;
     // private _path:Array<MapNode>=new Array;
     private createGameScene():void {
+        this._container=new egret.DisplayObjectContainer();
+
         this._bg=new TileMap();
-        this.addChild(this._bg);
+        this._container.addChild(this._bg);
         this._bg.Create();
 
         this._player=new Person();
@@ -128,7 +131,7 @@ class Main extends egret.DisplayObjectContainer {
         this._player.y=200;
         this._player.scaleX=0.8;
         this._player.scaleY=0.8;
-        this.addChild(this._player);
+        this._container.addChild(this._player);
         this._player.firstCreat();
         //this._player.Creat();
         var idle:Idle=new Idle (this._player);
@@ -171,22 +174,25 @@ class Main extends egret.DisplayObjectContainer {
             }
             return false;
         },this);
+        this.addChild(this._container);
 
         /***地图 */
-        // var offsetx:number;
-        // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
-        //     offsetx=e.stageX-this._bg.x;
-        //     this.addEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this)
-        // },this);
-        // function onMove(e:egret.TouchEvent,Main:Main){
-        //     var main=Main;
-        //     //this._bg.x+=offsetx;
-        //     //console.log("onMove");
-        //     egret.Tween.get(main._bg).to({x:main._bg.x+offsetx},200)
-        // }
-        // this.addEventListener(egret.TouchEvent.TOUCH_END,()=>{
-        //      this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this);
-        // },this)
+        var offsetx:number;
+        this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
+            offsetx=e.stageX-this._bg.x;
+            this.addEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this)
+        },this);
+        function onMove(e:egret.TouchEvent){
+            //this._bg.x+=offsetx;
+            //console.log("onMove");
+            if(offsetx>0)
+                egret.Tween.get(this._container).to({x:-360},200);
+            if(offsetx>0)
+                egret.Tween.get(this._container).to({x:0},200)
+        }
+        this.addEventListener(egret.TouchEvent.TOUCH_END,()=>{
+             this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,onMove,this);
+        },this)
     }
 /**帧事件' */
     private step:number=10;

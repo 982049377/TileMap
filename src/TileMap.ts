@@ -133,11 +133,11 @@ class TileMap extends egret.DisplayObjectContainer{
             var tile=new Tile(date,this.MapSize,this._grid);
             this.addChild(tile)
         }
-        this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(e:egret.TouchEvent)=>{
-            var x=Math.floor(e.stageX/this.MapSize);
-            var y=Math.floor(e.stageY/this.MapSize);
-            console.log("鼠标点击点xx:"+x+"yy"+y)
-        },this)
+        // this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(e:egret.TouchEvent)=>{
+        //     var x=Math.floor(e.stageX/this.MapSize);
+        //     var y=Math.floor(e.stageY/this.MapSize);
+        //     console.log("鼠标点击点xx:"+x+"yy"+y)
+        // },this)
          this._astar=new Astar(this._grid);
     }
      

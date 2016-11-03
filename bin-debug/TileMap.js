@@ -112,7 +112,6 @@ var TileMap = (function (_super) {
     }
     var d = __define,c=TileMap,p=c.prototype;
     p.Create = function () {
-        var _this = this;
         this._grid = new Grid(10, 10);
         var Container = new egret.DisplayObjectContainer();
         for (var i = 0; i < this.MapInfomation.length; i++) {
@@ -120,11 +119,11 @@ var TileMap = (function (_super) {
             var tile = new Tile(date, this.MapSize, this._grid);
             this.addChild(tile);
         }
-        this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e) {
-            var x = Math.floor(e.stageX / _this.MapSize);
-            var y = Math.floor(e.stageY / _this.MapSize);
-            console.log("鼠标点击点xx:" + x + "yy" + y);
-        }, this);
+        // this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(e:egret.TouchEvent)=>{
+        //     var x=Math.floor(e.stageX/this.MapSize);
+        //     var y=Math.floor(e.stageY/this.MapSize);
+        //     console.log("鼠标点击点xx:"+x+"yy"+y)
+        // },this)
         this._astar = new Astar(this._grid);
     };
     return TileMap;
