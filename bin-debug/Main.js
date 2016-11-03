@@ -31,6 +31,7 @@ var Main = (function (_super) {
     //public sssssss;
     function Main() {
         _super.call(this);
+        this.map_Grid = 0;
         /**帧事件' */
         this.step = 10;
         this.i = 2;
@@ -145,7 +146,7 @@ var Main = (function (_super) {
         }, this);
         egret.startTick(function () {
             if (_this._bg._astar._path[0] != null) {
-                if (_this._player.x == _this._bg._astar._path[0].x * _this._bg.MapSize + 50 && _this._player.y == _this._bg._astar._path[0].y * _this._bg.MapSize + 50) {
+                if (_this._player.x == (_this._bg._astar._path[0].x + _this.map_Grid) * _this._bg.MapSize + 50 && _this._player.y == _this._bg._astar._path[0].y * _this._bg.MapSize + 50) {
                     _this._player.SetState(idle);
                 }
             }
@@ -153,27 +154,30 @@ var Main = (function (_super) {
         }, this);
         this.addChild(this._container);
         /***地图 */
-        var offsetx;
         this.addEventListener(egret.TouchEvent.TOUCH_BEGIN, function (e) {
-            offsetx = e.stageX - _this._bg.x;
-            _this.addEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, _this);
+            _this.offsetx = e.stageX - _this._bg.x;
+            _this.addEventListener(egret.TouchEvent.TOUCH_MOVE, _this.onMove, _this);
         }, this);
-        function onMove(e) {
-            //this._bg.x+=offsetx;
-            //console.log("onMove");
-            if (offsetx > 0)
-                egret.Tween.get(this._container).to({ x: -360 }, 200);
-            if (offsetx > 0)
-                egret.Tween.get(this._container).to({ x: 0 }, 200);
-        }
         this.addEventListener(egret.TouchEvent.TOUCH_END, function () {
-            _this.removeEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, _this);
+            _this.removeEventListener(egret.TouchEvent.TOUCH_MOVE, _this.onMove, _this);
         }, this);
+    };
+    p.onMove = function (e) {
+        //this._bg.x+=offsetx;
+        //console.log("onMove");
+        if (this.offsetx > 0) {
+            egret.Tween.get(this._container).to({ x: -360 }, 200);
+            this.map_Grid = 360 / this._bg.MapSize;
+        }
+        if (this.offsetx < 0) {
+            egret.Tween.get(this._container).to({ x: 0 }, 200);
+            this.map_Grid = 0;
+        }
     };
     p.onEnterFrame = function (event) {
         //console.log('hi');
         var n = this._bg._astar._path.length;
-        var targetX = this._bg._astar._path[n - this.i].x * this._bg.MapSize + this._bg.MapSize / 2;
+        var targetX = (this._bg._astar._path[n - this.i].x + this.map_Grid) * this._bg.MapSize + this._bg.MapSize / 2;
         var targetY = this._bg._astar._path[n - this.i].y * this._bg.MapSize + this._bg.MapSize / 2;
         var dx = targetX - this._player.x;
         var dy = targetY - this._player.y;
