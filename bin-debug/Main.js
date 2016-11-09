@@ -31,20 +31,8 @@ var Main = (function (_super) {
     //public sssssss;
     function Main() {
         _super.call(this);
-        // private map_Grid=0;
-        // private offsetx:number;
-        // private onMove(e:egret.TouchEvent){
-        //         //this._bg.x+=offsetx;
-        //         //console.log("onMove");
-        //         if(this.offsetx>0){
-        //             egret.Tween.get(this._container).to({x:-360},200);
-        //             this.map_Grid=Math.floor(360/this._bg.MapSize);
-        //         }
-        //         if(this.offsetx<0){
-        //             egret.Tween.get(this._container).to({x:0},200)
-        //             this.map_Grid=0;
-        //         }
-        //     }
+        this.prevX = 0;
+        this.map_Grid = 0;
         /**帧事件' */
         this.step = 10;
         this.i = 2;
@@ -135,9 +123,10 @@ var Main = (function (_super) {
         this.touchEnabled = true;
         this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP, function (evt) {
             _this.setAstar();
-            //this._bg._astar.setStartNode(Math.floor(this._player.x/100)+this.map_Grid,Math.floor(this._player.y/100));
-            _this._bg._astar.setStartNode(Math.floor(_this._player.x / 100), Math.floor(_this._player.y / 100));
-            _this._bg._astar.setEndNode(Math.floor(evt.stageX / 100), Math.floor(evt.stageY / 100));
+            _this._bg._astar.setStartNode(Math.floor((_this._player.x) / 100), Math.floor(_this._player.y / 100));
+            //this._bg._astar.setStartNode(Math.floor(this._player.x/100),Math.floor(this._player.y/100));
+            //this._bg._astar.setEndNode(Math.floor(evt.stageX/100),Math.floor(evt.stageY/100));
+            _this._bg._astar.setEndNode(Math.floor((evt.stageX + _this.map_Grid) / 100), Math.floor(evt.stageY / 100));
             var i = _this._bg._astar.findPath();
             if (i == 1) {
                 _this._player.SetState(walk);
@@ -168,13 +157,29 @@ var Main = (function (_super) {
         }, this);
         this.addChild(this._container);
         /***地图 */
-        // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
-        //     this.offsetx=e.stageX-this._bg.x;
-        //     this.addEventListener(egret.TouchEvent.TOUCH_MOVE,this.onMove,this)
-        // },this);
-        // this.addEventListener(egret.TouchEvent.TOUCH_END,()=>{
-        //      this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,this.onMove,this);
-        // },this)
+        this._container.touchEnabled = true;
+        this._container.addEventListener(egret.TouchEvent.TOUCH_BEGIN, function (e) {
+            _this.prevX = e.stageX;
+            //this.offsetx=e.stageX-this._bg.x;
+            _this.addEventListener(egret.TouchEvent.TOUCH_MOVE, _this.onMove, _this);
+        }, this);
+        this.addEventListener(egret.TouchEvent.TOUCH_END, function () {
+            _this.removeEventListener(egret.TouchEvent.TOUCH_MOVE, _this.onMove, _this);
+        }, this);
+    };
+    p.onMove = function (e) {
+        //this._bg.x+=offsetx;
+        //console.log("onMove");
+        this.offsetx = this.prevX - e.stageX;
+        if (this.offsetx > 0) {
+            egret.Tween.get(this._container).to({ x: -360 }, 200);
+            this.map_Grid = 360;
+        }
+        if (this.offsetx < 0) {
+            console.log("12345789465413213212313");
+            egret.Tween.get(this._container).to({ x: 0 }, 200);
+            this.map_Grid = 0;
+        }
     };
     p.onEnterFrame = function (event) {
         //console.log('hi');

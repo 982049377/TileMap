@@ -33,14 +33,14 @@ class Main extends egret.DisplayObjectContainer {
      * 加载进度界面
      * Process interface loading
      */
-    private loadingView:LoadingUI;
+    private loadingView: LoadingUI;
     //public sssssss;
     public constructor() {
         super();
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
 
-    private onAddToStage(event:egret.Event) {
+    private onAddToStage(event: egret.Event) {
         //设置加载进度界面
         //Config to load process interface
         this.loadingView = new LoadingUI();
@@ -56,7 +56,7 @@ class Main extends egret.DisplayObjectContainer {
      * 配置文件加载完成,开始预加载preload资源组。
      * configuration file loading is completed, start to pre-load the preload resource group
      */
-    private onConfigComplete(event:RES.ResourceEvent):void {
+    private onConfigComplete(event: RES.ResourceEvent): void {
         RES.removeEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
         RES.addEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
         RES.addEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
@@ -69,7 +69,7 @@ class Main extends egret.DisplayObjectContainer {
      * preload资源组加载完成
      * Preload resource group is loaded
      */
-    private onResourceLoadComplete(event:RES.ResourceEvent):void {
+    private onResourceLoadComplete(event: RES.ResourceEvent): void {
         if (event.groupName == "preload") {
             this.stage.removeChild(this.loadingView);
             RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
@@ -84,7 +84,7 @@ class Main extends egret.DisplayObjectContainer {
      * 资源组加载出错
      *  The resource group loading failed
      */
-    private onItemLoadError(event:RES.ResourceEvent):void {
+    private onItemLoadError(event: RES.ResourceEvent): void {
         console.warn("Url:" + event.resItem.url + " has failed to load");
     }
 
@@ -92,7 +92,7 @@ class Main extends egret.DisplayObjectContainer {
      * 资源组加载出错
      *  The resource group loading failed
      */
-    private onResourceLoadError(event:RES.ResourceEvent):void {
+    private onResourceLoadError(event: RES.ResourceEvent): void {
         //TODO
         console.warn("Group:" + event.groupName + " has failed to load");
         //忽略加载失败的项目
@@ -104,7 +104,7 @@ class Main extends egret.DisplayObjectContainer {
      * preload资源组加载进度
      * Loading process of preload resource group
      */
-    private onResourceProgress(event:RES.ResourceEvent):void {
+    private onResourceProgress(event: RES.ResourceEvent): void {
         if (event.groupName == "preload") {
             this.loadingView.setProgress(event.itemsLoaded, event.itemsTotal);
         }
@@ -114,105 +114,109 @@ class Main extends egret.DisplayObjectContainer {
      * 创建游戏场景
      * Create a game scene
      */
-    private _player:Person;
-    private _bg:TileMap;
-    private _container:egret.DisplayObjectContainer;
+    private _player: Person;
+    private _bg: TileMap;
+    private _container: egret.DisplayObjectContainer;
     // private _grid:Grid;
     // private _path:Array<MapNode>=new Array;
-    private createGameScene():void {
-        this._container=new egret.DisplayObjectContainer();
+    private createGameScene(): void {
+        this._container = new egret.DisplayObjectContainer();
 
-        this._bg=new TileMap();
+        this._bg = new TileMap();
         this._container.addChild(this._bg);
         this._bg.Create();
 
-        this._player=new Person();
-        this._player.x=0;
-        this._player.y=200;
-        this._player.scaleX=0.8;
-        this._player.scaleY=0.8;
+        this._player = new Person();
+        this._player.x = 0;
+        this._player.y = 200;
+        this._player.scaleX = 0.8;
+        this._player.scaleY = 0.8;
         this._container.addChild(this._player);
         this._player.firstCreat();
         //this._player.Creat();
-        var idle:Idle=new Idle (this._player);
-        var walk:Walk=new Walk(this._player);
+        var idle: Idle = new Idle(this._player);
+        var walk: Walk = new Walk(this._player);
         this.touchEnabled = true;
-        this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,(evt:egret.TouchEvent)=>{
-            this.setAstar(); 
-            //this._bg._astar.setStartNode(Math.floor(this._player.x/100)+this.map_Grid,Math.floor(this._player.y/100));
-            this._bg._astar.setStartNode(Math.floor(this._player.x/100),Math.floor(this._player.y/100));
-            this._bg._astar.setEndNode(Math.floor(evt.stageX/100),Math.floor(evt.stageY/100));
-            var i=this._bg._astar.findPath();
-            if(i==1){
+        this.parent.stage.addEventListener(egret.TouchEvent.TOUCH_TAP, (evt: egret.TouchEvent) => {
+            this.setAstar();
+            this._bg._astar.setStartNode(Math.floor((this._player.x) / 100), Math.floor(this._player.y / 100));
+            //this._bg._astar.setStartNode(Math.floor(this._player.x/100),Math.floor(this._player.y/100));
+            //this._bg._astar.setEndNode(Math.floor(evt.stageX/100),Math.floor(evt.stageY/100));
+            this._bg._astar.setEndNode(Math.floor((evt.stageX + this.map_Grid) / 100), Math.floor(evt.stageY / 100));
+            var i = this._bg._astar.findPath();
+            if (i == 1) {
                 this._player.SetState(walk)
                 //egret.Tween.removeTweens(this._player);
                 this.addEventListener(egret.Event.ENTER_FRAME, this.onEnterFrame, this);
                 this.onEnterFrame;
                 //this.Move();
-                i=2
+                i = 2
             }
             else
-            if(i==0)
-            {
-                this._player.SetState(idle);
-                this.setAstar();
-                i=2;
-            }
-            else
-                if(i==-1)
-                {
+                if (i == 0) {
                     this._player.SetState(idle);
                     this.setAstar();
-                    i=2;
+                    i = 2;
                 }
-        },this);
-        egret.startTick(():boolean=>{
-            if(this._bg._astar._path[0]!=null){
-                if(this._player.x==(this._bg._astar._path[0].x)*this._bg.MapSize+50&& this._player.y==this._bg._astar._path[0].y*this._bg.MapSize+50){
+                else
+                    if (i == -1) {
+                        this._player.SetState(idle);
+                        this.setAstar();
+                        i = 2;
+                    }
+        }, this);
+        egret.startTick((): boolean => {
+            if (this._bg._astar._path[0] != null) {
+                if (this._player.x == (this._bg._astar._path[0].x) * this._bg.MapSize + 50 && this._player.y == this._bg._astar._path[0].y * this._bg.MapSize + 50) {
                     this._player.SetState(idle);
                     //this.setAstar(); 
                 }
             }
             return false;
-        },this);
+        }, this);
         this.addChild(this._container);
 
         /***地图 */
-       
-        // this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
-        //     this.offsetx=e.stageX-this._bg.x;
-        //     this.addEventListener(egret.TouchEvent.TOUCH_MOVE,this.onMove,this)
-        // },this);
-        // this.addEventListener(egret.TouchEvent.TOUCH_END,()=>{
-        //      this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,this.onMove,this);
-        // },this)
-    }
-    // private map_Grid=0;
-    // private offsetx:number;
-    // private onMove(e:egret.TouchEvent){
-    //         //this._bg.x+=offsetx;
-    //         //console.log("onMove");
-    //         if(this.offsetx>0){
-    //             egret.Tween.get(this._container).to({x:-360},200);
-    //             this.map_Grid=Math.floor(360/this._bg.MapSize);
-    //         }
-    //         if(this.offsetx<0){
-    //             egret.Tween.get(this._container).to({x:0},200)
-    //             this.map_Grid=0;
-    //         }
-    //     }
 
-/**帧事件' */
-    private step:number=10;
+        this._container.touchEnabled = true;
+        this._container.addEventListener(egret.TouchEvent.TOUCH_BEGIN, (e: egret.TouchEvent) => {
+            this.prevX = e.stageX;
+            //this.offsetx=e.stageX-this._bg.x;
+            this.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.onMove, this)
+        }, this);
+        this.addEventListener(egret.TouchEvent.TOUCH_END, () => {
+            this.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.onMove, this);
+        }, this)
+    }
+    private prevX: number = 0;
+    private map_Grid = 0;
+    private offsetx: number;
+    private onMove(e: egret.TouchEvent) {
+        //this._bg.x+=offsetx;
+        //console.log("onMove");
+        this.offsetx = this.prevX - e.stageX;
+        if(this.offsetx > 0) {
+            egret.Tween.get(this._container).to({ x: -360 }, 200);
+            this.map_Grid = 360;
+        }
+        if (this.offsetx < 0) {
+            console.log("12345789465413213212313");
+            egret.Tween.get(this._container).to({ x: 0 }, 200)
+            this.map_Grid = 0;
+        }
+    }
+
+    /**帧事件' */
+    private step: number = 10;
     private onEnterFrame(event: egret.Event): void {
         //console.log('hi');
-        var n=this._bg._astar._path.length;
-        var targetX: number = this._bg._astar._path[n-this.i].x* this._bg.MapSize + this._bg.MapSize / 2;
-        var targetY: number = this._bg._astar._path[n-this.i].y * this._bg.MapSize + this._bg.MapSize / 2;
+        var n = this._bg._astar._path.length;
+        var targetX: number = this._bg._astar._path[n - this.i].x * this._bg.MapSize + this._bg.MapSize / 2;
+        var targetY: number = this._bg._astar._path[n - this.i].y * this._bg.MapSize + this._bg.MapSize / 2;
         var dx: number = targetX - this._player.x;
         var dy: number = targetY - this._player.y;
         var dist: number = Math.sqrt(dx * dx + dy * dy);
-        if (dist <this.step*2) {
+        if (dist < this.step * 2) {
             this.i++;
             if (this.i > this._bg._astar._path.length) {
                 this.removeEventListener(egret.Event.ENTER_FRAME, this.onEnterFrame, this);
@@ -220,19 +224,19 @@ class Main extends egret.DisplayObjectContainer {
             }
         }
         else {
-            if(targetX-this._player.x>this.step)
+            if (targetX - this._player.x > this.step)
                 this._player.x += this.step;
-            if(targetY-this._player.y>this.step)
+            if (targetY - this._player.y > this.step)
                 this._player.y += this.step;
-            if(this._player.x-targetX>this.step)
+            if (this._player.x - targetX > this.step)
                 this._player.x -= this.step;
-            if(this._player.y-targetY>this.step)
+            if (this._player.y - targetY > this.step)
                 this._player.y -= this.step;
-            if(Math.abs(this._player.x-targetX)<=this.step){
-                this._player.x=targetX;
+            if (Math.abs(this._player.x - targetX) <= this.step) {
+                this._player.x = targetX;
             }
-            if(Math.abs(this._player.y-targetY)<=this.step){
-                this._player.y=targetY;
+            if (Math.abs(this._player.y - targetY) <= this.step) {
+                this._player.y = targetY;
             }
             //this._player.Move(new Vector2(targetX, targetY), this.inputPos);
         }
@@ -242,7 +246,7 @@ class Main extends egret.DisplayObjectContainer {
     }
 
 
-     private i=2;
+    private i = 2;
     // private _speed:number=1.5;
     /**Tween移动，格与格之间很卡' */
     // private Move():boolean{
@@ -266,19 +270,19 @@ class Main extends egret.DisplayObjectContainer {
     //     },this);
     //     return false;
     //  }
-     private setAstar():void{
+    private setAstar(): void {
         egret.Tween.removeTweens(this._player);
-        this._bg._astar.setStartNode(Math.floor(this._player.x/100),Math.floor(this._player.y/100));
+        this._bg._astar.setStartNode(Math.floor(this._player.x / 100), Math.floor(this._player.y / 100));
         this._bg._astar.empty();
-        this.i=1;
+        this.i = 1;
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
      * Create a Bitmap object according to name keyword.As for the property of name please refer to the configuration file of resources/resource.json.
      */
-    private createBitmapByName(name:string):egret.Bitmap {
+    private createBitmapByName(name: string): egret.Bitmap {
         var result = new egret.Bitmap();
-        var texture:egret.Texture = RES.getRes(name);
+        var texture: egret.Texture = RES.getRes(name);
         result.texture = texture;
         return result;
     }
@@ -287,18 +291,18 @@ class Main extends egret.DisplayObjectContainer {
      * 描述文件加载成功，开始播放动画
      * Description file loading is successful, start to play the animation
      */
-    private startAnimation(result:Array<any>):void {
-        var self:any = this;
+    private startAnimation(result: Array<any>): void {
+        var self: any = this;
 
         var parser = new egret.HtmlTextParser();
-        var textflowArr:Array<Array<egret.ITextElement>> = [];
-        for (var i:number = 0; i < result.length; i++) {
+        var textflowArr: Array<Array<egret.ITextElement>> = [];
+        for (var i: number = 0; i < result.length; i++) {
             textflowArr.push(parser.parser(result[i]));
         }
 
         var textfield = self.textfield;
         var count = -1;
-        var change:Function = function () {
+        var change: Function = function () {
             count++;
             if (count >= textflowArr.length) {
                 count = 0;
@@ -308,9 +312,9 @@ class Main extends egret.DisplayObjectContainer {
             self.changeDescription(textfield, lineArr);
 
             var tw = egret.Tween.get(textfield);
-            tw.to({"alpha": 1}, 200);
+            tw.to({ "alpha": 1 }, 200);
             tw.wait(2000);
-            tw.to({"alpha": 0}, 200);
+            tw.to({ "alpha": 0 }, 200);
             tw.call(change, self);
         };
 
@@ -321,10 +325,10 @@ class Main extends egret.DisplayObjectContainer {
      * 切换描述内容
      * Switch to described content
      */
-    private changeDescription(textfield:egret.TextField, textFlow:Array<egret.ITextElement>):void {
+    private changeDescription(textfield: egret.TextField, textFlow: Array<egret.ITextElement>): void {
         textfield.textFlow = textFlow;
     }
-  
+
 }
  /*
 class ss{
