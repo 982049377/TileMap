@@ -200,7 +200,7 @@ class Main extends egret.DisplayObjectContainer {
             this.map_Grid = 360;
         }
         if (this.offsetx < 0) {
-            console.log("12345789465413213212313");
+            //console.log("12345789465413213212313");
             egret.Tween.get(this._container).to({ x: 0 }, 200)
             this.map_Grid = 0;
         }
@@ -211,6 +211,9 @@ class Main extends egret.DisplayObjectContainer {
     private onEnterFrame(event: egret.Event): void {
         //console.log('hi');
         var n = this._bg._astar._path.length;
+        console.log(n - this.i);
+        if(n - this.i<0)
+            return;
         var targetX: number = this._bg._astar._path[n - this.i].x * this._bg.MapSize + this._bg.MapSize / 2;
         var targetY: number = this._bg._astar._path[n - this.i].y * this._bg.MapSize + this._bg.MapSize / 2;
         var dx: number = targetX - this._player.x;

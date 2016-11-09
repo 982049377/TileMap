@@ -176,7 +176,7 @@ var Main = (function (_super) {
             this.map_Grid = 360;
         }
         if (this.offsetx < 0) {
-            console.log("12345789465413213212313");
+            //console.log("12345789465413213212313");
             egret.Tween.get(this._container).to({ x: 0 }, 200);
             this.map_Grid = 0;
         }
@@ -184,6 +184,9 @@ var Main = (function (_super) {
     p.onEnterFrame = function (event) {
         //console.log('hi');
         var n = this._bg._astar._path.length;
+        console.log(n - this.i);
+        if (n - this.i < 0)
+            return;
         var targetX = this._bg._astar._path[n - this.i].x * this._bg.MapSize + this._bg.MapSize / 2;
         var targetY = this._bg._astar._path[n - this.i].y * this._bg.MapSize + this._bg.MapSize / 2;
         var dx = targetX - this._player.x;
