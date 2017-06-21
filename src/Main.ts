@@ -208,6 +208,7 @@ class Main extends egret.DisplayObjectContainer {
 
     /**帧事件' */
     private step: number = 10;
+    private i = 2;
     private onEnterFrame(event: egret.Event): void {
         //console.log('hi');
         var n = this._bg._astar._path.length;
@@ -249,7 +250,7 @@ class Main extends egret.DisplayObjectContainer {
     }
 
 
-    private i = 2;
+    
     // private _speed:number=1.5;
     /**Tween移动，格与格之间很卡' */
     // private Move():boolean{
